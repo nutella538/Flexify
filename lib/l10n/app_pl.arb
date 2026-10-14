@@ -494,5 +494,13 @@
   "nothingMatchesPlanSearch": "Brak wyników dla „{query}”. Możesz utworzyć to jako nowy plan.",
   "createPlan": "Utwórz plan",
   "createNamedPlan": "Utwórz „{name}”",
-  "setNumber": "Seria {number}"
+  "setNumber": "Seria {number}",
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration"
 }
