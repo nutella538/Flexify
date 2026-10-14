@@ -2061,5 +2061,29 @@
   "workoutStartFirst": "Start your workout before saving sets.",
   "workoutStartFailed": "Could not start workout.",
   "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutDuration": "Workout duration",
+  "@workoutStart": {
+    "description": "Workout session start text."
+  },
+  "@workoutFinish": {
+    "description": "Workout session finish text."
+  },
+  "@workoutFinishConfirm": {
+    "description": "Workout session finish confirm text."
+  },
+  "@workoutFinishDescription": {
+    "description": "Workout session finish description text."
+  },
+  "@workoutStartFirst": {
+    "description": "Workout session start first text."
+  },
+  "@workoutStartFailed": {
+    "description": "Workout session start failed text."
+  },
+  "@workoutFinishFailed": {
+    "description": "Workout session finish failed text."
+  },
+  "@workoutDuration": {
+    "description": "Workout session duration text."
+  }
 }
