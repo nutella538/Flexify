@@ -21,6 +21,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// Opt-in side-by-side developer build; never reuse the production package ID.
+def isTimerPreviewBuild = System.getenv('FLEXIFY_TIMER_PREVIEW') == '1'
+
 def isFdroidBuild = System.getenv('fdroidserver') != null &&
     System.getenv('home_vagrant') != null
 
@@ -151,7 +154,9 @@ android {
            buildConfigField "long", "BUILD_TIME", "0L"
        }
        debug {
-           if (keystorePropertiesFile.exists()) {
+           if (isTimerPreviewBuild) {
+               applicationIdSuffix ".timerpreview"
+           } else if (keystorePropertiesFile.exists()) {
                signingConfig = signingConfigs.release
            }
            // Reproducible builds
@@ -190,6 +195,12 @@ gradle.taskGraph.whenReady { taskGraph ->
             task.name.toLowerCase().contains(buildType.name.toLowerCase())
         }
         if (!buildTypeRequested) {
+            return
+        }
+
+        // The separately identified developer build uses Android's ordinary debug
+        // signing; production builds always retain the release certificate check.
+        if (isTimerPreviewBuild && buildType.name == 'debug') {
             return
         }
 

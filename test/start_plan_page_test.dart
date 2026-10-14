@@ -42,6 +42,14 @@ class RecordingTimerState extends TimerState {
   }
 }
 
+Future<void> beginWorkoutForTest(WidgetTester tester) async {
+  final start = find.byIcon(Icons.play_arrow);
+  if (start.evaluate().isNotEmpty) {
+    await tester.tap(start.first);
+    await tester.pumpAndSettle();
+  }
+}
+
 void main() {
   testWidgets('StartPlanPage shows its page chrome on the first frame', (
     WidgetTester tester,
@@ -133,6 +141,7 @@ void main() {
       await tester.enterText(textFieldWithLabel('Reps'), '5');
       await tester.enterText(textFieldWithLabel('Weight (kg)'), '50');
       await tester.pumpAndSettle();
+      await beginWorkoutForTest(tester);
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
 
@@ -221,6 +230,9 @@ void main() {
     expect(find.textContaining('Barbell row'), findsOne);
     expect(find.textContaining('Squat'), findsOne);
 
+    expect(find.byTooltip('Start workout'), findsOneWidget);
+    await beginWorkoutForTest(tester);
+
     final floatingRow = find.byKey(const Key('start-plan-floating-row'));
     expect(floatingRow, findsOneWidget);
     expect(
@@ -276,6 +288,7 @@ void main() {
         textFieldWithLabel(l10n.weightWithUnit('kg')),
         '50',
       );
+      await beginWorkoutForTest(tester);
       await tester.tap(find.text(l10n.actionSave));
       await tester.pumpAndSettle();
 
@@ -317,8 +330,10 @@ void main() {
     await tester.enterText(textFieldWithLabel(l10n.repsLabel), '5');
     await tester.enterText(textFieldWithLabel(l10n.weightWithUnit('kg')), '50');
 
-    await tester.tap(find.text(l10n.actionSave));
-    await tester.tap(find.text(l10n.actionSave));
+    await beginWorkoutForTest(tester);
+      await tester.tap(find.text(l10n.actionSave));
+    await beginWorkoutForTest(tester);
+      await tester.tap(find.text(l10n.actionSave));
     await tester.pumpAndSettle();
 
     final saved = await getExerciseSetsForExercise(
@@ -369,7 +384,8 @@ void main() {
       '50,5',
     );
     await tester.enterText(find.bySemanticsLabel(l10n.notesLabel), note);
-    await tester.tap(find.text(l10n.actionSave));
+    await beginWorkoutForTest(tester);
+      await tester.tap(find.text(l10n.actionSave));
     await tester.pumpAndSettle();
 
     final saved = await getLatestExerciseSet(database, exerciseName: exercise);
@@ -409,7 +425,7 @@ void main() {
       expect(find.textContaining(exercise), findsOneWidget);
       expect(textFieldWithLabel(l10n.repsLabel), findsOneWidget);
       expect(textFieldWithLabel(l10n.weightWithUnit('kg')), findsOneWidget);
-      expect(find.text(l10n.actionSave), findsOneWidget);
+      expect(find.byTooltip(l10n.workoutStart), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
@@ -555,6 +571,7 @@ void main() {
 
     await harness.pump(tester, StartPlanPage(plan: plan));
     await tester.pumpAndSettle();
+    await beginWorkoutForTest(tester);
 
     final reps = textFieldWithLabel('Reps');
     final weight = textFieldWithLabel('Weight (kg)');
@@ -604,6 +621,7 @@ void main() {
 
     await harness.pump(tester, StartPlanPage(plan: plan));
     await tester.pumpAndSettle();
+    await beginWorkoutForTest(tester);
 
     final minutes = editableWithSemanticsLabel('Minutes');
     final seconds = editableWithSemanticsLabel('Seconds');
@@ -712,7 +730,8 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('50'), findsOne);
 
-    await tester.tap(find.text('Save'));
+    await beginWorkoutForTest(tester);
+      await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
     final exerciseSetViews = await getExerciseSets(
@@ -769,6 +788,7 @@ void main() {
 
       await tester.enterText(textFieldWithLabel('Reps'), '8');
       await tester.enterText(textFieldWithLabel('Weight (kg)'), '30');
+      await beginWorkoutForTest(tester);
       await tester.tap(find.text('Save'));
       await tester.pumpAndSettle();
 
@@ -810,7 +830,8 @@ void main() {
     await tester.enterText(textFieldWithLabel('Reps'), '5');
     await tester.enterText(textFieldWithLabel('Weight (kg)'), '50');
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Save'));
+    await beginWorkoutForTest(tester);
+      await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
 
     expect(find.text('Set 1'), findsOne);

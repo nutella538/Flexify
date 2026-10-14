@@ -494,5 +494,13 @@
   "nothingMatchesPlanSearch": "Ничто не совпадает с «{query}». Вы можете создать его как новый план.",
   "createPlan": "Создать план",
   "createNamedPlan": "Создать «{name}»",
-  "setNumber": "Подход {number}"
+  "setNumber": "Подход {number}",
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration"
 }

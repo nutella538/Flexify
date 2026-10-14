@@ -12,7 +12,6 @@ import 'package:flexify/empty_state.dart';
 import 'package:flexify/database/exercise_analytics.dart';
 import 'package:flexify/database/exercise_set_repository.dart';
 import 'package:flexify/l10n/l10n.dart';
-import 'package:flexify/logging.dart';
 import 'package:flexify/main.dart';
 import 'package:flexify/permissions_page.dart';
 import 'package:flexify/plan/edit_plan_page.dart';
@@ -61,6 +60,8 @@ class _StartPlanPageState extends State<StartPlanPage>
   bool _cardio = false;
   DateTime? _lastSaved;
   bool _saving = false;
+  bool _startingWorkout = false;
+  Timer? _elapsedTicker;
   List<Rpm>? _rpms;
   String? _category;
   String? _image;
@@ -142,6 +143,20 @@ class _StartPlanPageState extends State<StartPlanPage>
                   onPressed: () => Navigator.pop(context),
                 ),
                 actions: [
+                  if (_workout == null)
+                    IconButton(
+                      tooltip: context.l10n.workoutStart,
+                      onPressed: _startingWorkout ? null : _startWorkout,
+                      icon: const Icon(Icons.play_arrow),
+                    )
+                  else ...[
+                    Text(_formatElapsed(DateTime.now().difference(_workout!.startedAt))),
+                    IconButton(
+                      tooltip: context.l10n.workoutFinish,
+                      onPressed: _confirmFinishWorkout,
+                      icon: const Icon(Icons.stop_circle_outlined),
+                    ),
+                  ],
                   IconButton(
                     tooltip: context.l10n.editPlan,
                     onPressed: editPlan,
@@ -585,15 +600,7 @@ class _StartPlanPageState extends State<StartPlanPage>
 
   @override
   void dispose() {
-    final workout = _workout;
-    if (workout != null) {
-      unawaited(_finishWorkout(workout.id));
-    } else {
-      final pendingWorkout = _workoutFuture;
-      if (pendingWorkout != null) {
-        unawaited(pendingWorkout.then((workout) => _finishWorkout(workout.id)));
-      }
-    }
+    _elapsedTicker?.cancel();
 
     _reps.dispose();
     _weight.dispose();
@@ -615,14 +622,6 @@ class _StartPlanPageState extends State<StartPlanPage>
     _planSub?.cancel();
 
     super.dispose();
-  }
-
-  Future<void> _finishWorkout(int workoutId) async {
-    try {
-      await finishWorkout(db, workoutId);
-    } catch (error, stackTrace) {
-      talker.error('Failed to finish workout session', error, stackTrace);
-    }
   }
 
   Future<ExerciseSetView?> getLast(String exercise) {
@@ -661,8 +660,76 @@ class _StartPlanPageState extends State<StartPlanPage>
     return workout;
   }
 
+  String _formatElapsed(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return hours > 0 ? '$hours:$minutes:$seconds' : '$minutes:$seconds';
+  }
+
+  void _startTicker() {
+    _elapsedTicker?.cancel();
+    _elapsedTicker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  Future<void> _startWorkout() async {
+    if (_startingWorkout || _workout != null) return;
+    setState(() => _startingWorkout = true);
+    try {
+      await _ensureWorkout();
+      if (mounted) _startTicker();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.workoutStartFailed)),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _startingWorkout = false);
+    }
+  }
+
+  Future<void> _confirmFinishWorkout() async {
+    final workout = _workout;
+    if (workout == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(context.l10n.workoutFinishConfirm),
+        content: Text(context.l10n.workoutFinishDescription),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(context.l10n.actionCancel)),
+          FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(context.l10n.workoutFinish)),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    try {
+      await finishWorkout(db, workout.id);
+      _elapsedTicker?.cancel();
+      if (mounted) Navigator.of(context).pop();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.workoutFinishFailed)),
+        );
+      }
+    }
+  }
+
   Future<void> _initializeWorkout() async {
-    await _ensureWorkout();
+    final existing = await (db.workouts.select()
+          ..where((w) => w.planId.equals(widget.plan.id) & w.endedAt.isNull())
+          ..limit(1)).getSingleOrNull();
+    if (existing == null || !mounted || _workout != null) return;
+    setState(() {
+      _workout = existing;
+      _workoutFuture = Future.value(existing);
+      _gymCountsStream = watchGymCounts(widget.plan.id, existing.id);
+    });
+    _startTicker();
   }
 
   @override
@@ -771,6 +838,12 @@ class _StartPlanPageState extends State<StartPlanPage>
     List<GymCount> counts,
   ) async {
     if (_saving) return;
+    if (_workout == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.workoutStartFirst)),
+      );
+      return;
+    }
     if (!_key.currentState!.validate()) return;
     if (snapshot.data == null || snapshot.data!.isEmpty) return;
     if (_selected >= snapshot.data!.length) return;
