@@ -494,5 +494,13 @@
   "nothingMatchesPlanSearch": "Keine Treffer für „{query}“. Du kannst daraus einen neuen Plan erstellen.",
   "createPlan": "Plan erstellen",
   "createNamedPlan": "„{name}“ erstellen",
-  "setNumber": "Satz {number}"
+  "setNumber": "Satz {number}",
+  "workoutStart": "Training starten",
+  "workoutFinish": "Training beenden",
+  "workoutFinishConfirm": "Training beenden?",
+  "workoutFinishDescription": "Die Trainingsdauer und deine Sätze werden gespeichert.",
+  "workoutStartFirst": "Starte dein Training, bevor du Sätze speicherst.",
+  "workoutStartFailed": "Training konnte nicht gestartet werden.",
+  "workoutFinishFailed": "Training konnte nicht beendet werden.",
+  "workoutDuration": "Trainingsdauer"
 }
