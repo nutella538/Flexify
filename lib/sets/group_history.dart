@@ -189,7 +189,7 @@ class _GroupHistoryState extends State<GroupHistory> {
               ),
             ),
             StreamBuilder<List<Workout>>(
-              stream: (db.workouts.select()
+              stream: (db.select(db.workouts)
                     ..where(
                       (workout) =>
                           workout.startedAt.isBiggerOrEqualValue(
