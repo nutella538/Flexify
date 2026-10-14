@@ -1,0 +1,36 @@
+name: Workout timer validation
+
+on:
+  push:
+    branches:
+      - feat/manual-workout-timer
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  flutter-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: false
+      - name: Setup Flutter from pinned submodule
+        run: |
+          git submodule update --init --recursive flutter
+          chmod +x flutter/bin/*
+          echo "$PWD/flutter/bin" >> "$GITHUB_PATH"
+          flutter/bin/flutter config --no-analytics
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Generate sources
+        run: dart run build_runner build -d
+      - name: Check formatting of modified Dart files
+        run: dart format --output=none --set-exit-if-changed lib/plan/start_plan_page.dart lib/sets/group_history.dart
+      - name: Static analysis
+        run: flutter analyze
+      - name: Flutter tests
+        run: flutter test
