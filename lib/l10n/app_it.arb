@@ -494,5 +494,13 @@
   "nothingMatchesPlanSearch": "Nessun risultato per “{query}”. Puoi crearlo come nuova scheda.",
   "createPlan": "Crea scheda",
   "createNamedPlan": "Crea “{name}”",
-  "setNumber": "Serie {number}"
+  "setNumber": "Serie {number}",
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration"
 }
