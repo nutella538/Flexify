@@ -422,7 +422,7 @@ void main() {
       expect(find.textContaining(exercise), findsOneWidget);
       expect(textFieldWithLabel(l10n.repsLabel), findsOneWidget);
       expect(textFieldWithLabel(l10n.weightWithUnit('kg')), findsOneWidget);
-      expect(find.text(l10n.actionSave), findsOneWidget);
+      expect(find.byTooltip(l10n.workoutStart), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );
@@ -568,6 +568,7 @@ void main() {
 
     await harness.pump(tester, StartPlanPage(plan: plan));
     await tester.pumpAndSettle();
+    await beginWorkoutForTest(tester);
 
     final reps = textFieldWithLabel('Reps');
     final weight = textFieldWithLabel('Weight (kg)');
@@ -617,6 +618,7 @@ void main() {
 
     await harness.pump(tester, StartPlanPage(plan: plan));
     await tester.pumpAndSettle();
+    await beginWorkoutForTest(tester);
 
     final minutes = editableWithSemanticsLabel('Minutes');
     final seconds = editableWithSemanticsLabel('Seconds');
