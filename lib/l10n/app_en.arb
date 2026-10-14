@@ -2053,5 +2053,13 @@
         "type": "int"
       }
     }
-  }
+  },
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration"
 }
