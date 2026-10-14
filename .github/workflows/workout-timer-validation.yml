@@ -32,5 +32,7 @@ jobs:
         run: dart format lib/plan/start_plan_page.dart lib/sets/group_history.dart
       - name: Static analysis
         run: flutter analyze
-      - name: Flutter tests
+      - name: Workout and plan regression tests
+        run: flutter test test/start_plan_page_test.dart test/plans_page_test.dart
+      - name: Full Flutter test suite
         run: flutter test
