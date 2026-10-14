@@ -680,7 +680,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     try {
       await _ensureWorkout();
       if (mounted) _startTicker();
-    } catch (error) {
+    } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(context.l10n.workoutStartFailed)),
@@ -710,7 +710,7 @@ class _StartPlanPageState extends State<StartPlanPage>
       await finishWorkout(db, workout.id);
       _elapsedTicker?.cancel();
       if (mounted) Navigator.of(context).pop();
-    } catch (error) {
+    } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(context.l10n.workoutFinishFailed)),
