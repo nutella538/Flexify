@@ -230,6 +230,9 @@ void main() {
     expect(find.textContaining('Barbell row'), findsOne);
     expect(find.textContaining('Squat'), findsOne);
 
+    expect(find.byTooltip('Start workout'), findsOneWidget);
+    await beginWorkoutForTest(tester);
+
     final floatingRow = find.byKey(const Key('start-plan-floating-row'));
     expect(floatingRow, findsOneWidget);
     expect(
