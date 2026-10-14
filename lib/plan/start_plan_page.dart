@@ -147,12 +147,12 @@ class _StartPlanPageState extends State<StartPlanPage>
                     TextButton.icon(
                       onPressed: _startingWorkout ? null : _startWorkout,
                       icon: const Icon(Icons.play_arrow),
-                      label: const Text('Start'),
+                      label: Text(context.l10n.workoutStart),
                     )
                   else ...[
                     Text(_formatElapsed(DateTime.now().difference(_workout!.startedAt))),
                     IconButton(
-                      tooltip: 'Finish workout',
+                      tooltip: context.l10n.workoutFinish,
                       onPressed: _confirmFinishWorkout,
                       icon: const Icon(Icons.stop_circle_outlined),
                     ),
@@ -683,7 +683,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not start workout: $error')),
+          SnackBar(content: Text(context.l10n.workoutStartFailed)),
         );
       }
     } finally {
@@ -697,11 +697,11 @@ class _StartPlanPageState extends State<StartPlanPage>
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Finish workout?'),
-        content: const Text('Your workout duration and sets will be saved.'),
+        title: Text(context.l10n.workoutFinishConfirm),
+        content: Text(context.l10n.workoutFinishDescription),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(context, true), child: const Text('Finish')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(context.l10n.actionCancel)),
+          FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(context.l10n.workoutFinish)),
         ],
       ),
     );
@@ -713,7 +713,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not finish workout: $error')),
+          SnackBar(content: Text(context.l10n.workoutFinishFailed)),
         );
       }
     }
@@ -840,7 +840,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     if (_saving) return;
     if (_workout == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Start your workout before saving sets.')),
+        SnackBar(content: Text(context.l10n.workoutStartFirst)),
       );
       return;
     }
