@@ -14,6 +14,7 @@ import 'package:flexify/sets/edit_set_page.dart';
 import 'package:flexify/sets/edit_sets_page.dart';
 import 'package:flexify/sets/group_history.dart';
 import 'package:flexify/sets/history_list.dart';
+import 'package:flexify/sets/workout_history_section.dart';
 import 'package:flexify/utils.dart';
 import 'package:flexify/platform_page_route.dart';
 import 'package:flutter/material.dart';
@@ -133,6 +134,12 @@ class _HistoryPageWidgetState extends State<_HistoryPageWidget> {
                 Positioned.fill(
                   child: Column(
                     children: [
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 240),
+                        child: const SingleChildScrollView(
+                          child: WorkoutHistorySection(),
+                        ),
+                      ),
                       if (snapshot.data?.isEmpty == true)
                         Expanded(
                           child: Padding(
