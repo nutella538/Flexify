@@ -12,7 +12,6 @@ import 'package:flexify/empty_state.dart';
 import 'package:flexify/database/exercise_analytics.dart';
 import 'package:flexify/database/exercise_set_repository.dart';
 import 'package:flexify/l10n/l10n.dart';
-import 'package:flexify/logging.dart';
 import 'package:flexify/main.dart';
 import 'package:flexify/permissions_page.dart';
 import 'package:flexify/plan/edit_plan_page.dart';
@@ -681,6 +680,12 @@ class _StartPlanPageState extends State<StartPlanPage>
     try {
       await _ensureWorkout();
       if (mounted) _startTicker();
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not start workout: $error')),
+        );
+      }
     } finally {
       if (mounted) setState(() => _startingWorkout = false);
     }
@@ -701,16 +706,24 @@ class _StartPlanPageState extends State<StartPlanPage>
       ),
     );
     if (confirmed != true || !mounted) return;
-    await finishWorkout(db, workout.id);
-    _elapsedTicker?.cancel();
-    if (mounted) Navigator.of(context).pop();
+    try {
+      await finishWorkout(db, workout.id);
+      _elapsedTicker?.cancel();
+      if (mounted) Navigator.of(context).pop();
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not finish workout: $error')),
+        );
+      }
+    }
   }
 
   Future<void> _initializeWorkout() async {
     final existing = await (db.workouts.select()
           ..where((w) => w.planId.equals(widget.plan.id) & w.endedAt.isNull())
           ..limit(1)).getSingleOrNull();
-    if (existing == null || !mounted) return;
+    if (existing == null || !mounted || _workout != null) return;
     setState(() {
       _workout = existing;
       _workoutFuture = Future.value(existing);
