@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:drift/drift.dart' show Value;
+
 
 import 'package:flexify/app_search.dart';
 import 'package:flexify/bottom_nav.dart';
@@ -192,11 +194,11 @@ class _GroupHistoryState extends State<GroupHistory> {
               stream: (db.select(db.workouts)
                     ..where(
                       (workout) =>
-                          workout.startedAt.isBiggerOrEqualValue(
-                            DateTime(group.day.year, group.day.month, group.day.day),
+                          workout.startedAt.isBiggerOrEqual(
+                            Value(DateTime(group.day.year, group.day.month, group.day.day)),
                           ) &
-                          workout.startedAt.isSmallerThanValue(
-                            DateTime(group.day.year, group.day.month, group.day.day + 1),
+                          workout.startedAt.isSmallerThan(
+                            Value(DateTime(group.day.year, group.day.month, group.day.day + 1)),
                           ) &
                           workout.endedAt.isNotNull(),
                     ))
