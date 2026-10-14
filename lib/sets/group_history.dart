@@ -195,10 +195,10 @@ class _GroupHistoryState extends State<GroupHistory> {
                     ..where(
                       (workout) =>
                           workout.startedAt.isBiggerOrEqual(
-                            Value(DateTime(group.day.year, group.day.month, group.day.day)),
+                            Variable<DateTime>(DateTime(group.day.year, group.day.month, group.day.day)),
                           ) &
                           workout.startedAt.isSmallerThan(
-                            Value(DateTime(group.day.year, group.day.month, group.day.day + 1)),
+                            Variable<DateTime>(DateTime(group.day.year, group.day.month, group.day.day + 1)),
                           ) &
                           workout.endedAt.isNotNull(),
                     ))
