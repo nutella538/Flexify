@@ -494,5 +494,13 @@
   "nothingMatchesPlanSearch": "“{query}”와 일치하는 항목이 없습니다. 새 플랜으로 만들 수 있습니다.",
   "createPlan": "플랜 만들기",
   "createNamedPlan": "“{name}” 만들기",
-  "setNumber": "세트 {number}"
+  "setNumber": "세트 {number}",
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration"
 }
