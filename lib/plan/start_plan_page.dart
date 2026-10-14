@@ -144,10 +144,10 @@ class _StartPlanPageState extends State<StartPlanPage>
                 ),
                 actions: [
                   if (_workout == null)
-                    TextButton.icon(
+                    IconButton(
+                      tooltip: context.l10n.workoutStart,
                       onPressed: _startingWorkout ? null : _startWorkout,
                       icon: const Icon(Icons.play_arrow),
-                      label: Text(context.l10n.workoutStart),
                     )
                   else ...[
                     Text(_formatElapsed(DateTime.now().difference(_workout!.startedAt))),
