@@ -495,12 +495,15 @@
   "createPlan": "プランを作成",
   "createNamedPlan": "「{name}」を作成",
   "setNumber": "セット {number}",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "ワークアウトを開始",
+  "workoutFinish": "ワークアウトを終了",
+  "workoutFinishConfirm": "ワークアウトを終了しますか？",
+  "workoutFinishDescription": "ワークアウトの時間とセットが保存されます。",
+  "workoutStartFirst": "セットを保存する前にワークアウトを開始してください。",
+  "workoutStartFailed": "ワークアウトを開始できませんでした。",
+  "workoutFinishFailed": "ワークアウトを終了できませんでした。",
+  "workoutDuration": "ワークアウト時間",
+  "estimatedTenRm": "推定10RM",
+  "nextSetRecommendation": "次のセットの推奨",
+  "tenRmNotEnoughData": "10RMを推定するためのトレーニングデータがまだ不足しています。"
 }
