@@ -495,12 +495,15 @@
   "createPlan": "플랜 만들기",
   "createNamedPlan": "“{name}” 만들기",
   "setNumber": "세트 {number}",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "운동 시작",
+  "workoutFinish": "운동 종료",
+  "workoutFinishConfirm": "운동을 종료할까요?",
+  "workoutFinishDescription": "운동 시간과 세트가 저장됩니다.",
+  "workoutStartFirst": "세트를 저장하기 전에 운동을 시작하세요.",
+  "workoutStartFailed": "운동을 시작하지 못했습니다.",
+  "workoutFinishFailed": "운동을 종료하지 못했습니다.",
+  "workoutDuration": "운동 시간",
+  "estimatedTenRm": "예상 10RM",
+  "nextSetRecommendation": "다음 세트 권장",
+  "tenRmNotEnoughData": "10RM을 추정하기 위한 운동 데이터가 아직 부족합니다."
 }
