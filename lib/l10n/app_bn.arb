@@ -2045,12 +2045,15 @@
       }
     }
   },
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "ওয়ার্কআউট শুরু করুন",
+  "workoutFinish": "ওয়ার্কআউট শেষ করুন",
+  "workoutFinishConfirm": "ওয়ার্কআউট শেষ করবেন?",
+  "workoutFinishDescription": "আপনার ওয়ার্কআউটের সময়কাল ও সেট সংরক্ষণ করা হবে।",
+  "workoutStartFirst": "সেট সংরক্ষণের আগে ওয়ার্কআউট শুরু করুন।",
+  "workoutStartFailed": "ওয়ার্কআউট শুরু করা যায়নি।",
+  "workoutFinishFailed": "ওয়ার্কআউট শেষ করা যায়নি।",
+  "workoutDuration": "ওয়ার্কআউটের সময়কাল",
+  "estimatedTenRm": "আনুমানিক 10RM",
+  "nextSetRecommendation": "পরবর্তী সেটের সুপারিশ",
+  "tenRmNotEnoughData": "এখনও 10RM অনুমান করার মতো পর্যাপ্ত প্রশিক্ষণ-তথ্য নেই।"
 }
