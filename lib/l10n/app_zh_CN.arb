@@ -495,12 +495,15 @@
   "createPlan": "创建计划",
   "createNamedPlan": "创建“{name}”",
   "setNumber": "第 {number} 组",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "开始训练",
+  "workoutFinish": "结束训练",
+  "workoutFinishConfirm": "结束训练？",
+  "workoutFinishDescription": "训练时长和训练组将被保存。",
+  "workoutStartFirst": "保存训练组前请先开始训练。",
+  "workoutStartFailed": "无法开始训练。",
+  "workoutFinishFailed": "无法结束训练。",
+  "workoutDuration": "训练时长",
+  "estimatedTenRm": "估算的10RM",
+  "nextSetRecommendation": "下一组建议",
+  "tenRmNotEnoughData": "训练数据不足，暂时无法估算10RM。"
 }
