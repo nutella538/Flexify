@@ -2045,12 +2045,15 @@
       }
     }
   },
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "ورزش شروع کریں",
+  "workoutFinish": "ورزش ختم کریں",
+  "workoutFinishConfirm": "ورزش ختم کریں؟",
+  "workoutFinishDescription": "آپ کے ورزش کا دورانیہ اور سیٹس محفوظ کیے جائیں گے۔",
+  "workoutStartFirst": "سیٹس محفوظ کرنے سے پہلے ورزش شروع کریں۔",
+  "workoutStartFailed": "ورزش شروع نہیں ہو سکی۔",
+  "workoutFinishFailed": "ورزش ختم نہیں ہو سکی۔",
+  "workoutDuration": "ورزش کا دورانیہ",
+  "estimatedTenRm": "تخمینی 10RM",
+  "nextSetRecommendation": "اگلے سیٹ کے لیے تجویز",
+  "tenRmNotEnoughData": "ابھی 10RM کا اندازہ لگانے کے لیے کافی تربیتی ڈیٹا موجود نہیں۔"
 }
