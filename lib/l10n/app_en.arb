@@ -2087,6 +2087,15 @@
     "description": "Workout session duration text."
   },
   "estimatedTenRm": "Estimated 10RM",
+  "@estimatedTenRm": {
+    "description": "Label for the automatically estimated ten-repetition maximum."
+  },
   "nextSetRecommendation": "Next-set recommendation",
-  "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet."
+  "@nextSetRecommendation": {
+    "description": "Recommendation for the next workout set."
+  },
+  "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet.",
+  "@tenRmNotEnoughData": {
+    "description": "Message shown when there is insufficient training history for a 10RM estimate."
+  }
 }
