@@ -495,12 +495,15 @@
   "createPlan": "Создать план",
   "createNamedPlan": "Создать «{name}»",
   "setNumber": "Подход {number}",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "Начать тренировку",
+  "workoutFinish": "Завершить тренировку",
+  "workoutFinishConfirm": "Завершить тренировку?",
+  "workoutFinishDescription": "Длительность тренировки и подходы будут сохранены.",
+  "workoutStartFirst": "Начните тренировку перед сохранением подходов.",
+  "workoutStartFailed": "Не удалось начать тренировку.",
+  "workoutFinishFailed": "Не удалось завершить тренировку.",
+  "workoutDuration": "Длительность тренировки",
+  "estimatedTenRm": "Расчётный 10ПМ",
+  "nextSetRecommendation": "Рекомендация для следующего подхода",
+  "tenRmNotEnoughData": "Пока недостаточно данных тренировок для оценки 10ПМ."
 }
