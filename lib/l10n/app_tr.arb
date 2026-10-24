@@ -495,12 +495,15 @@
   "createPlan": "Plan Oluştur",
   "createNamedPlan": "“{name}” Oluştur",
   "setNumber": "{number}. Set",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "Antrenmanı başlat",
+  "workoutFinish": "Antrenmanı bitir",
+  "workoutFinishConfirm": "Antrenman bitirilsin mi?",
+  "workoutFinishDescription": "Antrenman süreniz ve setleriniz kaydedilecek.",
+  "workoutStartFirst": "Setleri kaydetmeden önce antrenmanı başlatın.",
+  "workoutStartFailed": "Antrenman başlatılamadı.",
+  "workoutFinishFailed": "Antrenman bitirilemedi.",
+  "workoutDuration": "Antrenman süresi",
+  "estimatedTenRm": "Tahmini 10RM",
+  "nextSetRecommendation": "Sonraki set için öneri",
+  "tenRmNotEnoughData": "10RM tahmini için henüz yeterli antrenman verisi yok."
 }
