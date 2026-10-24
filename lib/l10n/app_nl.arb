@@ -495,12 +495,15 @@
   "createPlan": "Schema aanmaken",
   "createNamedPlan": "“{name}” aanmaken",
   "setNumber": "Set {number}",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "Training starten",
+  "workoutFinish": "Training beëindigen",
+  "workoutFinishConfirm": "Training beëindigen?",
+  "workoutFinishDescription": "De trainingsduur en je sets worden opgeslagen.",
+  "workoutStartFirst": "Start je training voordat je sets opslaat.",
+  "workoutStartFailed": "Training starten is mislukt.",
+  "workoutFinishFailed": "Training beëindigen is mislukt.",
+  "workoutDuration": "Trainingsduur",
+  "estimatedTenRm": "Geschatte 10RM",
+  "nextSetRecommendation": "Aanbeveling voor de volgende set",
+  "tenRmNotEnoughData": "Nog niet genoeg trainingsgegevens om een 10RM te schatten."
 }
