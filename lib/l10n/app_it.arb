@@ -495,12 +495,15 @@
   "createPlan": "Crea scheda",
   "createNamedPlan": "Crea “{name}”",
   "setNumber": "Serie {number}",
-  "workoutStart": "Start workout",
-  "workoutFinish": "Finish workout",
-  "workoutFinishConfirm": "Finish workout?",
-  "workoutFinishDescription": "Your workout duration and sets will be saved.",
-  "workoutStartFirst": "Start your workout before saving sets.",
-  "workoutStartFailed": "Could not start workout.",
-  "workoutFinishFailed": "Could not finish workout.",
-  "workoutDuration": "Workout duration"
+  "workoutStart": "Inizia allenamento",
+  "workoutFinish": "Termina allenamento",
+  "workoutFinishConfirm": "Terminare l’allenamento?",
+  "workoutFinishDescription": "La durata dell’allenamento e le serie verranno salvate.",
+  "workoutStartFirst": "Inizia l’allenamento prima di salvare le serie.",
+  "workoutStartFailed": "Impossibile avviare l’allenamento.",
+  "workoutFinishFailed": "Impossibile terminare l’allenamento.",
+  "workoutDuration": "Durata dell’allenamento",
+  "estimatedTenRm": "10RM stimato",
+  "nextSetRecommendation": "Consiglio per la serie successiva",
+  "tenRmNotEnoughData": "Dati di allenamento insufficienti per stimare il 10RM."
 }
