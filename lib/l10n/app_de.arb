@@ -502,5 +502,8 @@
   "workoutStartFirst": "Starte dein Training, bevor du Sätze speicherst.",
   "workoutStartFailed": "Training konnte nicht gestartet werden.",
   "workoutFinishFailed": "Training konnte nicht beendet werden.",
-  "workoutDuration": "Trainingsdauer"
+  "workoutDuration": "Trainingsdauer",
+  "estimatedTenRm": "Geschätztes 10RM",
+  "nextSetRecommendation": "Empfehlung für den nächsten Satz",
+  "tenRmNotEnoughData": "Noch nicht genug Trainingsdaten für eine 10RM-Schätzung."
 }
