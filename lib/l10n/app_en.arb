@@ -2085,5 +2085,8 @@
   },
   "@workoutDuration": {
     "description": "Workout session duration text."
-  }
+  },
+  "estimatedTenRm": "Estimated 10RM",
+  "nextSetRecommendation": "Next-set recommendation",
+  "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet."
 }
