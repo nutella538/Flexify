@@ -17,6 +17,7 @@ import 'package:flexify/permissions_page.dart';
 import 'package:flexify/plan/edit_plan_page.dart';
 import 'package:flexify/plan/plan_queries.dart';
 import 'package:flexify/plan/session_sets.dart';
+import 'package:flexify/plan/ten_rep_max.dart';
 import 'package:flexify/plan/start_list.dart';
 import 'package:flexify/plan/workout_sessions.dart';
 import 'package:flexify/responsive.dart';
@@ -65,6 +66,9 @@ class _StartPlanPageState extends State<StartPlanPage>
   List<Rpm>? _rpms;
   String? _category;
   String? _image;
+  double? _estimatedTenRm;
+  double? _recommendedNextWeight;
+  int _tenRmRequestId = 0;
 
   Stream<List<PlanExerciseEntry>>? _stream;
   Stream<List<GymCount>>? _gymCountsStream;
@@ -327,7 +331,51 @@ class _StartPlanPageState extends State<StartPlanPage>
       ),
       const SizedBox(height: 8.0),
       _weightField(snapshot, counts),
+      const SizedBox(height: 8.0),
+      _tenRmFeedback(),
     ];
+  }
+
+  Widget _tenRmFeedback() {
+    final tenRm = _estimatedTenRm;
+    if (tenRm == null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Text(
+          context.l10n.tenRmNotEnoughData,
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+      );
+    }
+
+    final formattedTenRm = formatDisplayNumber(context, tenRm);
+    final recommendation = _recommendedNextWeight;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${context.l10n.estimatedTenRm}: $formattedTenRm $_unit',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          if (recommendation != null) ...[
+            const SizedBox(height: 4),
+            Text(
+              '${context.l10n.nextSetRecommendation}: '
+              '${formatDisplayNumber(context, recommendation)} $_unit × 15–25 '
+              '${context.l10n.repsLabel}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   List<Widget> cardioFields(
@@ -513,6 +561,7 @@ class _StartPlanPageState extends State<StartPlanPage>
                 setState(() {
                   _unit = newValue!;
                 });
+                unawaited(_refreshSelectedTenRm());
               },
             ),
           ],
@@ -626,6 +675,63 @@ class _StartPlanPageState extends State<StartPlanPage>
 
   Future<ExerciseSetView?> getLast(String exercise) {
     return getLatestExerciseSet(db, exerciseName: exercise);
+  }
+
+  Future<void> _refreshSelectedTenRm() async {
+    final exercises = await _stream?.first;
+    if (!mounted ||
+        exercises == null ||
+        exercises.isEmpty ||
+        _selected >= exercises.length) {
+      return;
+    }
+    await _refreshTenRm(exercises[_selected].exercise.name);
+  }
+
+  Future<void> _refreshTenRm(
+    String exerciseName, {
+    ExerciseSetView? latestSet,
+  }) async {
+    final requestId = ++_tenRmRequestId;
+    final history = await getExerciseSetsForExercise(
+      db,
+      exerciseName: exerciseName,
+      limit: 20,
+    );
+    if (!mounted || requestId != _tenRmRequestId) return;
+
+    final recentSets = <TenRmSet>[];
+    for (final set in history) {
+      if (set.cardio) continue;
+      final loadKg = canonicalExerciseSetLoad(set.unit, set.weight);
+      if (loadKg == null) continue;
+      recentSets.add(
+        TenRmSet(weight: displayLoad(_unit, loadKg), reps: set.reps),
+      );
+    }
+
+    final tenRm = estimateTenRm(recentSets);
+    final lastSet = latestSet ?? (history.isEmpty ? null : history.first);
+    double? lastWeight;
+    if (lastSet != null && !lastSet.cardio) {
+      final loadKg = canonicalExerciseSetLoad(lastSet.unit, lastSet.weight);
+      if (loadKg != null) lastWeight = displayLoad(_unit, loadKg);
+    }
+
+    final step = weightStep(exerciseName, _unit);
+    final recommendation = tenRm == null
+        ? null
+        : recommendNextSetWeight(
+            tenRm: tenRm,
+            lastWeight: lastWeight ?? 0,
+            lastReps: lastSet?.reps ?? 0,
+            step: step,
+          );
+
+    setState(() {
+      _estimatedTenRm = tenRm;
+      _recommendedNextWeight = recommendation;
+    });
   }
 
   /// Returns the first set from the most recent training session for [exercise].
@@ -959,6 +1065,8 @@ class _StartPlanPageState extends State<StartPlanPage>
         _updateExerciseSetTextFields(exerciseSet);
         _lastSaved = DateTime.now();
       });
+      await _refreshTenRm(exercise, latestSet: exerciseSet);
+      if (!mounted) return;
       if (finishedExercise) await select(_selected + 1);
 
       if (!settings.notifications) return;
@@ -1011,6 +1119,7 @@ class _StartPlanPageState extends State<StartPlanPage>
         _clearExerciseSetTextFields();
       }
     });
+    await _refreshTenRm(exercise.name);
   }
 
   Future<void> select(int index) async {
@@ -1033,6 +1142,9 @@ class _StartPlanPageState extends State<StartPlanPage>
     _category = null;
     _image = null;
     _notes.text = '';
+    _tenRmRequestId++;
+    _estimatedTenRm = null;
+    _recommendedNextWeight = null;
   }
 
   void useBodyWeight() async {
