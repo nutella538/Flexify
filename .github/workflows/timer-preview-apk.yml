@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - feat/manual-workout-timer
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
