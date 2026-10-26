@@ -5,8 +5,16 @@ import 'package:flexify/main.dart';
 import 'package:flutter/material.dart';
 
 /// Completed sessions are separate from the legacy exercise-by-exercise history.
-class WorkoutHistorySection extends StatelessWidget {
+class WorkoutHistorySection extends StatefulWidget {
   const WorkoutHistorySection({super.key});
+
+  @override
+  State<WorkoutHistorySection> createState() => _WorkoutHistorySectionState();
+}
+
+class _WorkoutHistorySectionState extends State<WorkoutHistorySection> {
+  // Hide deleted rows immediately as a UI safeguard while Drift's stream refreshes.
+  final Set<int> _deletedWorkoutIds = <int>{};
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +27,9 @@ class WorkoutHistorySection extends StatelessWidget {
             ..limit(30))
           .watch(),
       builder: (context, snapshot) {
-        final workouts = snapshot.data ?? const <Workout>[];
+        final workouts = (snapshot.data ?? const <Workout>[])
+            .where((workout) => !_deletedWorkoutIds.contains(workout.id))
+            .toList();
         if (workouts.isEmpty) return const SizedBox.shrink();
 
         return Column(
@@ -83,7 +93,6 @@ class WorkoutHistorySection extends StatelessWidget {
                         );
                       },
                     ),
-
                   ],
                 ),
               ),
@@ -92,7 +101,6 @@ class WorkoutHistorySection extends StatelessWidget {
       },
     );
   }
-
 
   Future<void> _deleteWorkout(BuildContext context, Workout workout) async {
     final confirmed = await showDialog<bool>(
@@ -126,6 +134,9 @@ class WorkoutHistorySection extends StatelessWidget {
             ..where((row) => row.id.equals(workout.id)))
           .go();
     });
+
+    if (!mounted) return;
+    setState(() => _deletedWorkoutIds.add(workout.id));
   }
 
   String _duration(Duration duration) {
