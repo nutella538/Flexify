@@ -505,5 +505,7 @@
   "workoutDuration": "운동 시간",
   "estimatedTenRm": "예상 10RM",
   "nextSetRecommendation": "다음 세트 권장",
-  "tenRmNotEnoughData": "10RM을 추정하기 위한 운동 데이터가 아직 부족합니다."
+  "tenRmNotEnoughData": "10RM을 추정하기 위한 운동 데이터가 아직 부족합니다.",
+  "targetReps": "목표 반복 횟수",
+  "currentSetTenRm": "이 세트의 10RM"
 }
