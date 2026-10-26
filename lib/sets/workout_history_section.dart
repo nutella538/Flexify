@@ -40,6 +40,17 @@ class WorkoutHistorySection extends StatelessWidget {
                     '${context.l10n.workoutDuration}: '
                     '${_duration(workout.endedAt!.difference(workout.startedAt))}',
                   ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        tooltip: context.l10n.actionDelete,
+                        onPressed: () => _deleteWorkout(context, workout),
+                        icon: const Icon(Icons.delete_outline),
+                      ),
+                      const Icon(Icons.expand_more),
+                    ],
+                  ),
                   children: [
                     StreamBuilder<List<QueryRow>>(
                       stream: db.customSelect(
@@ -72,42 +83,7 @@ class WorkoutHistorySection extends StatelessWidget {
                         );
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.delete_outline),
-                      title: Text(context.l10n.actionDelete),
-                      onTap: () async {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (dialogContext) => AlertDialog(
-                            title: Text(context.l10n.confirmDelete),
-                            content: Text(
-                              '${MaterialLocalizations.of(context).formatMediumDate(workout.startedAt.toLocal())} · '
-                              '${context.l10n.workoutDuration}: '
-                              '${_duration(workout.endedAt!.difference(workout.startedAt))}',
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(dialogContext, false),
-                                child: Text(context.l10n.actionCancel),
-                              ),
-                              FilledButton(
-                                onPressed: () => Navigator.pop(dialogContext, true),
-                                child: Text(context.l10n.actionDelete),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (confirmed != true || !context.mounted) return;
-                        await db.transaction(() async {
-                          await (db.exerciseSets.delete()
-                                ..where((set) => set.workoutId.equals(workout.id)))
-                              .go();
-                          await (db.workouts.delete()
-                                ..where((row) => row.id.equals(workout.id)))
-                              .go();
-                        });
-                      },
-                    ),
+
                   ],
                 ),
               ),
@@ -115,6 +91,41 @@ class WorkoutHistorySection extends StatelessWidget {
         );
       },
     );
+  }
+
+
+  Future<void> _deleteWorkout(BuildContext context, Workout workout) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.confirmDelete),
+        content: Text(
+          '${MaterialLocalizations.of(context).formatMediumDate(workout.startedAt.toLocal())} · '
+          '${context.l10n.workoutDuration}: '
+          '${_duration(workout.endedAt!.difference(workout.startedAt))}',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: Text(context.l10n.actionCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: Text(context.l10n.actionDelete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+
+    await db.transaction(() async {
+      await (db.exerciseSets.delete()
+            ..where((set) => set.workoutId.equals(workout.id)))
+          .go();
+      await (db.workouts.delete()
+            ..where((row) => row.id.equals(workout.id)))
+          .go();
+    });
   }
 
   String _duration(Duration duration) {
