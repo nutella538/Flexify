@@ -2055,5 +2055,7 @@
   "workoutDuration": "ระยะเวลาการออกกำลังกาย",
   "estimatedTenRm": "10RM โดยประมาณ",
   "nextSetRecommendation": "คำแนะนำสำหรับเซ็ตถัดไป",
-  "tenRmNotEnoughData": "ยังมีข้อมูลการฝึกไม่เพียงพอสำหรับประมาณค่า 10RM"
+  "tenRmNotEnoughData": "ยังมีข้อมูลการฝึกไม่เพียงพอสำหรับประมาณค่า 10RM",
+  "targetReps": "จำนวนครั้งเป้าหมาย",
+  "currentSetTenRm": "10RM จากเซ็ตนี้"
 }
