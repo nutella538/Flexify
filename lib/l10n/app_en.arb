@@ -2097,6 +2097,12 @@
   "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet.",
   "targetReps": "Target repetitions",
   "currentSetTenRm": "10RM from this set",
+  "@targetReps": {
+    "description": "Fixed target number of repetitions for an exercise."
+  },
+  "@currentSetTenRm": {
+    "description": "Live 10RM estimate calculated from the currently entered weight and repetitions."
+  },
   "@tenRmNotEnoughData": {
     "description": "Message shown when there is insufficient training history for a 10RM estimate."
   }
