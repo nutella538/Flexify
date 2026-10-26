@@ -1075,15 +1075,20 @@ class AppDatabase extends _$AppDatabase {
                 'UPDATE settings SET default_graph_limit = 30 WHERE default_graph_limit = 20',
               );
             },
-            from69To70: (m, schema) async {
-              await m.addColumn(
-                schema.planExercises,
-                schema.planExercises.targetReps,
-              );
-            },
           );
           await transaction(() async {
-            await upgrade(m, from, to);
+            // The versioned schema snapshots currently end at v69. Run those
+            // migrations first, then add the v70 column directly.
+            final legacyTarget = to > 69 ? 69 : to;
+            if (from < legacyTarget) {
+              await upgrade(m, from, legacyTarget);
+            }
+            if (from < 70 && to >= 70) {
+              await customStatement(
+                'ALTER TABLE plan_exercises '
+                'ADD COLUMN target_reps INTEGER NOT NULL DEFAULT 15',
+              );
+            }
 
             if (to == schemaVersion) {
               final foreignKeyViolations = await customSelect(
