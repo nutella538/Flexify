@@ -505,5 +505,7 @@
   "workoutDuration": "Czas treningu",
   "estimatedTenRm": "Szacowane 10RM",
   "nextSetRecommendation": "Zalecenie dotyczące następnej serii",
-  "tenRmNotEnoughData": "Za mało danych treningowych, aby oszacować 10RM."
+  "tenRmNotEnoughData": "Za mało danych treningowych, aby oszacować 10RM.",
+  "targetReps": "Docelowa liczba powtórzeń",
+  "currentSetTenRm": "10RM z tej serii"
 }
