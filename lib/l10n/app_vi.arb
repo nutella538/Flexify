@@ -2055,5 +2055,7 @@
   "workoutDuration": "Thời lượng buổi tập",
   "estimatedTenRm": "10RM ước tính",
   "nextSetRecommendation": "Đề xuất cho hiệp tiếp theo",
-  "tenRmNotEnoughData": "Chưa có đủ dữ liệu tập luyện để ước tính 10RM."
+  "tenRmNotEnoughData": "Chưa có đủ dữ liệu tập luyện để ước tính 10RM.",
+  "targetReps": "Số lần lặp mục tiêu",
+  "currentSetTenRm": "10RM từ hiệp này"
 }
