@@ -2096,6 +2096,7 @@
   },
   "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet.",
   "targetReps": "Target repetitions",
+  "currentSetTenRm": "10RM from this set",
   "@tenRmNotEnoughData": {
     "description": "Message shown when there is insufficient training history for a 10RM estimate."
   }
