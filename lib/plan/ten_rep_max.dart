@@ -45,20 +45,22 @@ double recommendNextSetWeight({
   required double lastWeight,
   required double lastReps,
   required double step,
+  int targetReps = 15,
 }) {
   final safeStep = step > 0 && step.isFinite ? step : 1.0;
-  final baseline = _roundToStep(tenRm * 0.8, safeStep);
+  final safeTarget = targetReps.clamp(1, 50);
+  final baseline = _roundToStep(tenRm * 40 / (30 + safeTarget), safeStep);
 
   if (!lastWeight.isFinite || lastWeight <= 0 || !lastReps.isFinite || lastReps <= 0) {
     return baseline;
   }
 
-  if (lastReps < 15) {
+  if (lastReps < safeTarget) {
     final lower = lastWeight - safeStep;
     return lower > 0 ? _roundToStep(lower, safeStep) : lastWeight;
   }
 
-  if (lastReps >= 25) {
+  if (lastReps >= safeTarget + 5) {
     final increase = _roundToStep(lastWeight + safeStep, safeStep);
     return increase > baseline ? increase : baseline;
   }
