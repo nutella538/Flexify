@@ -505,5 +505,7 @@
   "workoutDuration": "Duración del entrenamiento",
   "estimatedTenRm": "10RM estimado",
   "nextSetRecommendation": "Recomendación para la siguiente serie",
-  "tenRmNotEnoughData": "Aún no hay suficientes datos de entrenamiento para estimar el 10RM."
+  "tenRmNotEnoughData": "Aún no hay suficientes datos de entrenamiento para estimar el 10RM.",
+  "targetReps": "Repeticiones objetivo",
+  "currentSetTenRm": "10RM de esta serie"
 }
