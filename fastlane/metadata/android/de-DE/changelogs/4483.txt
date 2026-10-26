@@ -1,0 +1,10 @@
+• Text in Flexify-Diagramm-Tooltips zentrieren
+• Umstellung der Speicherung des Körpergewichts abschließen
+• Codex-Hooks entfernen
+• Unnötige Datei entfernen
+• Testdaten für Flexify-Trainings-Screenshots korrigieren
+• Großen Abstand über dem Diagrammverlauf beheben
+• Abstände der Diagrammfilter korrigieren
+• Typ für die Begrenzung von Tooltip-Kanten korrigieren
+• Standardanzahl der Punkte auf 30 setzen
+• Android-Build auf integriertes Kotlin umstellen
