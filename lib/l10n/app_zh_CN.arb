@@ -505,5 +505,7 @@
   "workoutDuration": "训练时长",
   "estimatedTenRm": "估算的10RM",
   "nextSetRecommendation": "下一组建议",
-  "tenRmNotEnoughData": "训练数据不足，暂时无法估算10RM。"
+  "tenRmNotEnoughData": "训练数据不足，暂时无法估算10RM。",
+  "targetReps": "目标重复次数",
+  "currentSetTenRm": "本组的10RM"
 }
