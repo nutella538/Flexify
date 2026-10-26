@@ -1075,7 +1075,7 @@ class AppDatabase extends _$AppDatabase {
                 'UPDATE settings SET default_graph_limit = 30 WHERE default_graph_limit = 20',
               );
             },
-            from69To70: (Migrator m, Schema70 schema) async {
+            from69To70: (m, schema) async {
               await m.addColumn(
                 schema.planExercises,
                 schema.planExercises.targetReps,
