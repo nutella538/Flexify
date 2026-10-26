@@ -2055,5 +2055,7 @@
   "workoutDuration": "वर्कआउट की अवधि",
   "estimatedTenRm": "अनुमानित 10RM",
   "nextSetRecommendation": "अगले सेट के लिए सुझाव",
-  "tenRmNotEnoughData": "अभी 10RM का अनुमान लगाने के लिए पर्याप्त प्रशिक्षण डेटा नहीं है।"
+  "tenRmNotEnoughData": "अभी 10RM का अनुमान लगाने के लिए पर्याप्त प्रशिक्षण डेटा नहीं है।",
+  "targetReps": "लक्षित रेप्स",
+  "currentSetTenRm": "इस सेट से 10RM"
 }
