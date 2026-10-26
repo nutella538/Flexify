@@ -2055,5 +2055,7 @@
   "workoutDuration": "Durasi latihan",
   "estimatedTenRm": "Perkiraan 10RM",
   "nextSetRecommendation": "Saran untuk set berikutnya",
-  "tenRmNotEnoughData": "Data latihan belum cukup untuk memperkirakan 10RM."
+  "tenRmNotEnoughData": "Data latihan belum cukup untuk memperkirakan 10RM.",
+  "targetReps": "Repetisi target",
+  "currentSetTenRm": "10RM dari set ini"
 }
