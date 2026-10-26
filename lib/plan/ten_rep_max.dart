@@ -39,7 +39,7 @@ double? estimateTenRm(Iterable<TenRmSet> sets, {int maxSamples = 10}) {
 ///
 /// The 10RM estimate provides a baseline for the requested target. Actual
 /// performance in the latest set takes precedence: reduce below target reps,
-/// keep the load up to nine reps above target, and increase at target + 10.
+/// keep the load up to four reps above target, and increase at target + 5.
 double recommendNextSetWeight({
   required double tenRm,
   required double lastWeight,
@@ -60,7 +60,7 @@ double recommendNextSetWeight({
     return lower > 0 ? _roundToStep(lower, safeStep) : lastWeight;
   }
 
-  if (lastReps >= safeTarget + 10) {
+  if (lastReps >= safeTarget + 5) {
     final increase = _roundToStep(lastWeight + safeStep, safeStep);
     return increase > baseline ? increase : baseline;
   }
