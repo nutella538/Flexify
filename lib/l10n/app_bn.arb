@@ -2055,5 +2055,7 @@
   "workoutDuration": "ওয়ার্কআউটের সময়কাল",
   "estimatedTenRm": "আনুমানিক 10RM",
   "nextSetRecommendation": "পরবর্তী সেটের সুপারিশ",
-  "tenRmNotEnoughData": "এখনও 10RM অনুমান করার মতো পর্যাপ্ত প্রশিক্ষণ-তথ্য নেই।"
+  "tenRmNotEnoughData": "এখনও 10RM অনুমান করার মতো পর্যাপ্ত প্রশিক্ষণ-তথ্য নেই।",
+  "targetReps": "লক্ষ্য পুনরাবৃত্তি",
+  "currentSetTenRm": "এই সেট থেকে 10RM"
 }
