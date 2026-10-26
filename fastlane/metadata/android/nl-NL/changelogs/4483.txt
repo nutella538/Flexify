@@ -1,0 +1,10 @@
+• Tekst in Flexify-grafiektooltips centreren
+• Migratie van de opslag van lichaamsgewicht voltooien
+• Codex-hooks verwijderen
+• Overbodig bestand verwijderen
+• Testgegevens voor Flexify-workoutscreenshots herstellen
+• Grote ruimte boven de grafiekgeschiedenis oplossen
+• Enkele marges van grafiekfilters aanpassen
+• Type voor begrenzing van tooltipranden corrigeren
+• Standaard aantal punten instellen op 30
+• Android-build migreren naar ingebouwde Kotlin
