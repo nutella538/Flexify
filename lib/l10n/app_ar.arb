@@ -2055,5 +2055,7 @@
   "workoutDuration": "مدة التمرين",
   "estimatedTenRm": "تقدير 10RM",
   "nextSetRecommendation": "توصية للمجموعة التالية",
-  "tenRmNotEnoughData": "لا توجد بيانات تدريب كافية لتقدير 10RM بعد."
+  "tenRmNotEnoughData": "لا توجد بيانات تدريب كافية لتقدير 10RM بعد.",
+  "targetReps": "التكرارات المستهدفة",
+  "currentSetTenRm": "10RM من هذه المجموعة"
 }
