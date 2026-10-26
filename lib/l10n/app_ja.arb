@@ -505,5 +505,7 @@
   "workoutDuration": "ワークアウト時間",
   "estimatedTenRm": "推定10RM",
   "nextSetRecommendation": "次のセットの推奨",
-  "tenRmNotEnoughData": "10RMを推定するためのトレーニングデータがまだ不足しています。"
+  "tenRmNotEnoughData": "10RMを推定するためのトレーニングデータがまだ不足しています。",
+  "targetReps": "目標回数",
+  "currentSetTenRm": "このセットからの10RM"
 }
