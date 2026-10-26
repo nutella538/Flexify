@@ -2055,5 +2055,7 @@
   "workoutDuration": "مدت تمرین",
   "estimatedTenRm": "برآورد 10RM",
   "nextSetRecommendation": "پیشنهاد برای ست بعدی",
-  "tenRmNotEnoughData": "هنوز دادهٔ تمرینی کافی برای برآورد 10RM وجود ندارد."
+  "tenRmNotEnoughData": "هنوز دادهٔ تمرینی کافی برای برآورد 10RM وجود ندارد.",
+  "targetReps": "تکرار هدف",
+  "currentSetTenRm": "10RM از این ست"
 }
