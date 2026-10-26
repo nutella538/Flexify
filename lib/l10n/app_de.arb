@@ -506,5 +506,6 @@
   "estimatedTenRm": "Geschätztes 10RM",
   "nextSetRecommendation": "Empfehlung für den nächsten Satz",
   "tenRmNotEnoughData": "Noch nicht genug Trainingsdaten für eine 10RM-Schätzung.",
-  "targetReps": "Zielwiederholungen"
+  "targetReps": "Zielwiederholungen",
+  "currentSetTenRm": "10RM aus diesem Satz"
 }
