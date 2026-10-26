@@ -292,8 +292,9 @@ Future<void> main(List<String> args) async {
 
       final database = openPersistent();
       final actual = await snapshot(database);
+      final upgradedExpected = afterGraphLimitUpgrade(expected);
       for (final table in expected.keys.where((name) => name != 'settings')) {
-        expect(actual[table], expected[table], reason: table);
+        expect(actual[table], upgradedExpected[table], reason: table);
       }
       final settings = await database.settings.select().getSingle();
       expect(settings.localeOverride, 'en');
