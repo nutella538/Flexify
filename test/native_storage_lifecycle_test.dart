@@ -157,6 +157,10 @@ void main() {
       for (final setting in before['settings']!)
         {...setting, 'default_graph_limit': 30},
     ],
+    'plan_exercises': [
+      for (final exercise in before['plan_exercises']!)
+        {...exercise, 'target_reps': 15},
+    ],
   };
 
   Future<void> expectHealthy(AppDatabase database) async {
