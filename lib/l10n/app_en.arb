@@ -2095,6 +2095,7 @@
     "description": "Recommendation for the next workout set."
   },
   "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet.",
+  "targetReps": "Target repetitions",
   "@tenRmNotEnoughData": {
     "description": "Message shown when there is insufficient training history for a 10RM estimate."
   }
