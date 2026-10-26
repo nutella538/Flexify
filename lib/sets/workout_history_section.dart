@@ -31,25 +31,25 @@ class WorkoutHistorySection extends StatelessWidget {
                 child: ExpansionTile(
                   key: ValueKey('completed-workout-${workout.id}'),
                   leading: const Icon(Icons.fitness_center_rounded),
-                  title: Text(
-                    MaterialLocalizations.of(context).formatMediumDate(
-                      workout.startedAt.toLocal(),
-                    ),
-                  ),
-                  subtitle: Text(
-                    '${context.l10n.workoutDuration}: '
-                    '${_duration(workout.endedAt!.difference(workout.startedAt))}',
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  title: Row(
                     children: [
+                      Expanded(
+                        child: Text(
+                          MaterialLocalizations.of(context).formatMediumDate(
+                            workout.startedAt.toLocal(),
+                          ),
+                        ),
+                      ),
                       IconButton(
                         tooltip: context.l10n.actionDelete,
                         onPressed: () => _deleteWorkout(context, workout),
                         icon: const Icon(Icons.delete_outline),
                       ),
-                      const Icon(Icons.expand_more),
                     ],
+                  ),
+                  subtitle: Text(
+                    '${context.l10n.workoutDuration}: '
+                    '${_duration(workout.endedAt!.difference(workout.startedAt))}',
                   ),
                   children: [
                     StreamBuilder<List<QueryRow>>(
