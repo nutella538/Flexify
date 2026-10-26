@@ -36,12 +36,14 @@ class ExerciseModal extends StatefulWidget {
 class _ExerciseModalState extends State<ExerciseModal> {
   final _max = TextEditingController();
   final _warmup = TextEditingController();
+  final _targetReps = TextEditingController(text: '15');
   bool _timers = true;
 
   @override
   void dispose() {
     _max.dispose();
     _warmup.dispose();
+    _targetReps.dispose();
     super.dispose();
   }
 
@@ -57,6 +59,7 @@ class _ExerciseModalState extends State<ExerciseModal> {
           if (!mounted) return;
           _max.text = planExercise.maxSets?.toString() ?? '';
           _warmup.text = planExercise.warmupSets?.toString() ?? '';
+          _targetReps.text = planExercise.targetReps.toString();
 
           setState(() {
             _timers = planExercise.timers;
@@ -78,6 +81,7 @@ class _ExerciseModalState extends State<ExerciseModal> {
             ).context;
             final maxController = TextEditingController(text: _max.text);
             final warmupController = TextEditingController(text: _warmup.text);
+            final targetRepsController = TextEditingController(text: _targetReps.text);
             var timers = _timers;
             Navigator.pop(context);
 
@@ -125,6 +129,20 @@ class _ExerciseModalState extends State<ExerciseModal> {
                           ),
                         ),
                         const SizedBox(height: 16),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: targetRepsController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                            decimal: false,
+                          ),
+                          onTap: () => selectAll(targetRepsController),
+                          onChanged: changeTargetReps,
+                          decoration: InputDecoration(
+                            labelText: dialogContext.l10n.targetReps,
+                            border: const OutlineInputBorder(),
+                            hintText: '15',
+                          ),
+                        ),
                         StatefulBuilder(
                           builder: (context, setDialogState) => ListTile(
                             title: Text(dialogContext.l10n.restTimers),
@@ -154,6 +172,7 @@ class _ExerciseModalState extends State<ExerciseModal> {
             );
             maxController.dispose();
             warmupController.dispose();
+            targetRepsController.dispose();
           },
         ),
         if (widget.hasData)
@@ -232,6 +251,14 @@ class _ExerciseModalState extends State<ExerciseModal> {
     (db.planExercises.update()
           ..where((u) => u.id.equals(widget.planExerciseId)))
         .write(PlanExercisesCompanion(maxSets: Value(int.tryParse(value))));
+  }
+
+  void changeTargetReps(String value) {
+    final parsed = int.tryParse(value);
+    if (parsed == null || parsed < 1 || parsed > 50) return;
+    (db.planExercises.update()
+          ..where((u) => u.id.equals(widget.planExerciseId)))
+        .write(PlanExercisesCompanion(targetReps: Value(parsed)));
   }
 
   void changeWarmup(String value) {
