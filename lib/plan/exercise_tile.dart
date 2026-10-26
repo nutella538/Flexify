@@ -28,11 +28,18 @@ class _ExerciseTileState extends State<ExerciseTile> {
   late final _warmup = TextEditingController(
     text: widget.planExercise.warmupSets.value?.toString(),
   );
+  late final _targetReps = TextEditingController(
+    text: (widget.planExercise.targetReps.present
+            ? widget.planExercise.targetReps.value
+            : 15)
+        .toString(),
+  );
 
   @override
   void dispose() {
     _max.dispose();
     _warmup.dispose();
+    _targetReps.dispose();
     super.dispose();
   }
 
@@ -102,6 +109,30 @@ class _ExerciseTileState extends State<ExerciseTile> {
                             border: const OutlineInputBorder(),
                             hintText: value.toString(),
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _targetReps,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: false,
+                        ),
+                        onTap: () => selectAll(_targetReps),
+                        onChanged: (value) {
+                          final parsed = int.tryParse(value);
+                          if (parsed != null && parsed >= 1 && parsed <= 50) {
+                            widget.onChange(
+                              widget.planExercise.copyWith(
+                                enabled: const Value(true),
+                                targetReps: Value(parsed),
+                              ),
+                            );
+                          }
+                        },
+                        decoration: InputDecoration(
+                          labelText: context.l10n.targetReps,
+                          border: const OutlineInputBorder(),
+                          hintText: '15',
                         ),
                       ),
                       StatefulBuilder(
