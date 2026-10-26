@@ -35,11 +35,11 @@ double? estimateTenRm(Iterable<TenRmSet> sets, {int maxSamples = 10}) {
   return (estimates[middle - 1] + estimates[middle]) / 2;
 }
 
-/// Suggests the next load for a 15–25 repetition training range.
+/// Suggests the next load around an exercise-specific target repetition count.
 ///
-/// The 10RM estimate provides a baseline for about 20 repetitions. Actual
-/// performance in the latest set takes precedence: reduce one increment below
-/// 15 reps, keep the load for 15–24 reps, and increase at 25 or more reps.
+/// The 10RM estimate provides a baseline for the requested target. Actual
+/// performance in the latest set takes precedence: reduce below target reps,
+/// keep the load up to four reps above target, and increase at target + 5.
 double recommendNextSetWeight({
   required double tenRm,
   required double lastWeight,
