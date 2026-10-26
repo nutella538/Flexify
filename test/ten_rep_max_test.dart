@@ -98,6 +98,16 @@ void main() {
           step: 2.5,
           targetReps: 16,
         ),
+        50,
+      );
+      expect(
+        recommendNextSetWeight(
+          tenRm: 60,
+          lastWeight: 50,
+          lastReps: 26,
+          step: 2.5,
+          targetReps: 16,
+        ),
         52.5,
       );
     });
