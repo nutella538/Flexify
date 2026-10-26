@@ -2055,5 +2055,7 @@
   "workoutDuration": "ورزش کا دورانیہ",
   "estimatedTenRm": "تخمینی 10RM",
   "nextSetRecommendation": "اگلے سیٹ کے لیے تجویز",
-  "tenRmNotEnoughData": "ابھی 10RM کا اندازہ لگانے کے لیے کافی تربیتی ڈیٹا موجود نہیں۔"
+  "tenRmNotEnoughData": "ابھی 10RM کا اندازہ لگانے کے لیے کافی تربیتی ڈیٹا موجود نہیں۔",
+  "targetReps": "ہدف تکرار",
+  "currentSetTenRm": "اس سیٹ سے 10RM"
 }
