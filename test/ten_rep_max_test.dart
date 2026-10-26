@@ -69,6 +69,39 @@ void main() {
       );
     });
 
+    test('uses each exercise target when recommending the next load', () {
+      expect(
+        recommendNextSetWeight(
+          tenRm: 60,
+          lastWeight: 50,
+          lastReps: 9,
+          step: 2.5,
+          targetReps: 10,
+        ),
+        47.5,
+      );
+      expect(
+        recommendNextSetWeight(
+          tenRm: 60,
+          lastWeight: 50,
+          lastReps: 20,
+          step: 2.5,
+          targetReps: 16,
+        ),
+        50,
+      );
+      expect(
+        recommendNextSetWeight(
+          tenRm: 60,
+          lastWeight: 50,
+          lastReps: 21,
+          step: 2.5,
+          targetReps: 16,
+        ),
+        52.5,
+      );
+    });
+
     test('increases the load at 25 reps or more', () {
       expect(
         recommendNextSetWeight(
