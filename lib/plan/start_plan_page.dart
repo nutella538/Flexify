@@ -68,6 +68,7 @@ class _StartPlanPageState extends State<StartPlanPage>
   String? _image;
   double? _estimatedTenRm;
   double? _recommendedNextWeight;
+  int _targetReps = 15;
   int _tenRmRequestId = 0;
 
   Stream<List<PlanExerciseEntry>>? _stream;
@@ -322,6 +323,7 @@ class _StartPlanPageState extends State<StartPlanPage>
         step: 1,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (_) => _focusAndSelect(_weightFocus, _weight),
+        onChanged: (_) => setState(() {}),
         validator: (value) {
           if (value == null || value.isEmpty) return context.l10n.requiredField;
           if (parseDisplayNumber(context, value) == null)
@@ -337,19 +339,17 @@ class _StartPlanPageState extends State<StartPlanPage>
   }
 
   Widget _tenRmFeedback() {
-    final tenRm = _estimatedTenRm;
-    if (tenRm == null) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        child: Text(
-          context.l10n.tenRmNotEnoughData,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-      );
-    }
-
-    final formattedTenRm = formatDisplayNumber(context, tenRm);
+    final weight = parseDisplayNumber(context, _weight.text);
+    final reps = parseDisplayNumber(context, _reps.text);
+    final currentSetTenRm = weight != null &&
+            reps != null &&
+            weight > 0 &&
+            reps > 0
+        ? weight * (30 + reps) / 40
+        : null;
+    final historicalTenRm = _estimatedTenRm;
     final recommendation = _recommendedNextWeight;
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -360,18 +360,36 @@ class _StartPlanPageState extends State<StartPlanPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '${context.l10n.estimatedTenRm}: $formattedTenRm $_unit',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          if (recommendation != null) ...[
-            const SizedBox(height: 4),
+          if (currentSetTenRm != null)
             Text(
-              '${context.l10n.nextSetRecommendation}: '
-              '${formatDisplayNumber(context, recommendation)} $_unit × 15–25 '
-              '${context.l10n.repsLabel}',
+              '${context.l10n.currentSetTenRm}: '
+              '${formatDisplayNumber(context, currentSetTenRm)} $_unit',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          if (historicalTenRm == null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                context.l10n.tenRmNotEnoughData,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            )
+          else ...[
+            if (currentSetTenRm != null) const SizedBox(height: 4),
+            Text(
+              '${context.l10n.estimatedTenRm}: '
+              '${formatDisplayNumber(context, historicalTenRm)} $_unit',
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            if (recommendation != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                '${context.l10n.nextSetRecommendation}: '
+                '${formatDisplayNumber(context, recommendation)} $_unit × '
+                '$_targetReps ${context.l10n.repsLabel}',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ],
           ],
         ],
       ),
@@ -511,6 +529,7 @@ class _StartPlanPageState extends State<StartPlanPage>
       focusNode: _weightFocus,
       labelText: context.l10n.weightWithUnit(_unit),
       step: weightStep(exerciseName, _unit),
+      onChanged: (_) => setState(() {}),
       suffixIcon: Selector<Setting, bool>(
         selector: (context, settings) => settings.showBodyWeight,
         builder: (context, showBodyWeight, child) => Visibility(
@@ -711,6 +730,18 @@ class _StartPlanPageState extends State<StartPlanPage>
     }
 
     final tenRm = estimateTenRm(recentSets);
+    final exercise = await getExerciseByName(exerciseName);
+    final planExercise = exercise == null
+        ? null
+        : await (db.planExercises.select()
+              ..where(
+                (row) =>
+                    row.planId.equals(widget.plan.id) &
+                    row.exerciseId.equals(exercise.id),
+              )
+              ..limit(1))
+            .getSingleOrNull();
+    final targetReps = planExercise?.targetReps ?? 15;
     final lastSet = latestSet ?? (history.isEmpty ? null : history.first);
     double? lastWeight;
     if (lastSet != null && !lastSet.cardio) {
@@ -726,11 +757,13 @@ class _StartPlanPageState extends State<StartPlanPage>
             lastWeight: lastWeight ?? 0,
             lastReps: lastSet?.reps ?? 0,
             step: step,
+            targetReps: targetReps,
           );
 
     setState(() {
       _estimatedTenRm = tenRm;
       _recommendedNextWeight = recommendation;
+      _targetReps = targetReps;
     });
   }
 
@@ -1145,6 +1178,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     _tenRmRequestId++;
     _estimatedTenRm = null;
     _recommendedNextWeight = null;
+    _targetReps = 15;
   }
 
   void useBodyWeight() async {
