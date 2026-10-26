@@ -57,12 +57,12 @@ void main() {
       );
     });
 
-    test('keeps the load inside the target repetition range', () {
+    test('keeps the load up to four reps above target', () {
       expect(
         recommendNextSetWeight(
           tenRm: 60,
           lastWeight: 50,
-          lastReps: 20,
+          lastReps: 19,
           step: 2.5,
         ),
         50,
@@ -98,7 +98,7 @@ void main() {
           step: 2.5,
           targetReps: 16,
         ),
-        50,
+        52.5,
       );
       expect(
         recommendNextSetWeight(
@@ -112,12 +112,12 @@ void main() {
       );
     });
 
-    test('increases the load at 25 reps or more', () {
+    test('increases the load at target plus five reps', () {
       expect(
         recommendNextSetWeight(
           tenRm: 60,
           lastWeight: 50,
-          lastReps: 25,
+          lastReps: 20,
           step: 2.5,
         ),
         52.5,
