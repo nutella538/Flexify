@@ -32,25 +32,35 @@ fun hasBackupLocalizations(context: Context): Boolean {
 
 fun scheduleBackups(context: Context) {
     if (!hasBackupLocalizations(context)) return
+
+    // Never schedule another run if the user has disabled automatic backups
+    // or has removed the destination folder.
+    val (automaticBackups, backupPath) = getSettings(context)
+    if (!automaticBackups || backupPath.isNullOrBlank()) return
+
     val backupIntent =
         Intent(context, BackupReceiver::class.java).apply { setPackage(context.packageName) }
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         0,
         backupIntent,
-        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
-    val calendar = Calendar.getInstance().apply {
+    val now = System.currentTimeMillis()
+    val nextRun = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, 2)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
-        if (timeInMillis < System.currentTimeMillis()) add(Calendar.DAY_OF_YEAR, 1)
+        set(Calendar.MILLISECOND, 0)
+        if (timeInMillis <= now) add(Calendar.DAY_OF_YEAR, 1)
     }
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    alarmManager.setInexactRepeating(
+    // A one-shot alarm is re-armed after every receiver attempt. This makes
+    // the next run explicit instead of relying on a repeating alarm surviving
+    // device idle and receiver failures.
+    alarmManager.setAndAllowWhileIdle(
         AlarmManager.RTC_WAKEUP,
-        calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY,
+        nextRun.timeInMillis,
         pendingIntent
     )
 }
