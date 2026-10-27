@@ -88,8 +88,8 @@ class _WorkoutHistorySectionState extends State<WorkoutHistorySection> {
                         final rows =
                             exercisesSnapshot.data ?? const <QueryRow>[];
                         if (rows.isEmpty) {
-                          return const ListTile(
-                            title: Text(context.l10n.noExercisesYet),
+                          return ListTile(
+                             title: Text(context.l10n.noExercisesYet),
                           );
                         }
                         return Column(
