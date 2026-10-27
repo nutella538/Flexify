@@ -172,6 +172,14 @@ class BackupReceiver : BroadcastReceiver() {
                     Log.w("BackupReceiver", "Could not remove incomplete backup file", cleanupError)
                 }
             }
+
+            // Re-arm the next daily run even when this attempt failed or
+            // returned early. scheduleBackups checks the user's current setting.
+            try {
+                scheduleBackups(context)
+            } catch (scheduleError: Exception) {
+                Log.e("BackupReceiver", "Could not schedule the next automatic backup", scheduleError)
+            }
         }
     }
 
