@@ -163,7 +163,10 @@ class BackupReceiver : BroadcastReceiver() {
     }
 
     private fun failBackup(context: Context, message: String) {
-        setAutomaticBackups(context, false)
+        // Keep automatic backups enabled after a failed attempt. A temporary
+        // SAF/provider/database issue must not permanently stop future backups;
+        // the repeating alarm can retry on the next scheduled day.
+        Log.w("BackupReceiver", "Automatic backup failed: $message")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
