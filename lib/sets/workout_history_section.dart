@@ -234,6 +234,17 @@ class _SetHistoryTile extends StatelessWidget {
     final details = <String>[];
     if (reps != null) details.add('${_number(reps)} Wdh.');
     if (loadKg != null) details.add('${_number(loadKg)} kg');
+    if (reps != null && loadKg != null && reps > 0 && reps < 37 && loadKg > 0) {
+      // Estimate 1RM with the Brzycki equation, then derive the equivalent 10RM.
+      // The estimate is intentionally omitted for very high rep counts where
+      // this formula becomes unreliable.
+      final oneRmFactor = 1.0278 - 0.0278 * reps;
+      if (oneRmFactor > 0) {
+        final estimatedOneRm = loadKg / oneRmFactor;
+        final estimatedTenRm = estimatedOneRm * (1.0278 - 0.0278 * 10);
+        details.add('10RM ~ ${_number(estimatedTenRm)} kg');
+      }
+    }
     if (distance != null) details.add('${_number(distance / 1000)} km');
     if (durationMs != null && durationMs > 0) {
       final seconds = durationMs ~/ 1000;
