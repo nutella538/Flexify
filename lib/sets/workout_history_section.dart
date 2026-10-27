@@ -257,7 +257,7 @@ class _SetHistoryTile extends StatelessWidget {
         radius: 14,
         child: Text('$index', style: const TextStyle(fontSize: 12)),
       ),
-      title: Text('Satz $index'),
+      title: Text(context.l10n.setNumber(index)),
       trailing: Text(details.isEmpty ? '—' : details.join(' · ')),
     );
   }
