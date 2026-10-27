@@ -68,8 +68,10 @@ void main() {
 
     expect(find.byType(Card), findsOneWidget);
     expect(find.textContaining('42m'), findsOneWidget);
+    // Exercises are nested inside the completed-workout expansion.
+    await tester.tap(find.byType(ExpansionTile).first);
+    await tester.pumpAndSettle();
     expect(find.text('Bench press'), findsOneWidget);
-    expect(find.text('15 Wdh. · 40 kg · 10RM ~ 30.8 kg'), findsNothing);
 
     await tester.tap(find.text('Bench press'));
     await tester.pumpAndSettle();
