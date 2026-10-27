@@ -1,26 +1,18 @@
 import 'package:flexify/animated_fab.dart';
-import 'package:flexify/app_search.dart';
 import 'package:flexify/bottom_nav.dart';
-import 'package:flexify/constants.dart';
 import 'package:flexify/database/body_weight_repository.dart';
 import 'package:flexify/database/database.dart';
 import 'package:flexify/database/exercise_set_repository.dart';
-import 'package:flexify/empty_state.dart';
-import 'package:flexify/filters.dart';
 import 'package:flexify/l10n/l10n.dart';
 import 'package:flexify/main.dart';
 import 'package:flexify/responsive.dart';
 import 'package:flexify/selection_controller.dart';
 import 'package:flexify/sets/edit_set_page.dart';
-import 'package:flexify/sets/edit_sets_page.dart';
-import 'package:flexify/sets/group_history.dart';
-import 'package:flexify/sets/history_list.dart';
 import 'package:flexify/sets/workout_history_section.dart';
 import 'package:flexify/utils.dart';
 import 'package:flexify/platform_page_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 class HistoryDay {
   final String name;
