@@ -1,3 +1,4 @@
+import 'package:flexify/database/database.dart';
 import 'package:flexify/sets/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
