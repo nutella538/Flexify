@@ -39,7 +39,7 @@ void main() {
     final harness = await FlexifyTestHarness.create();
     await pumpHistoryPage(tester, harness);
 
-    expect(find.text('Noch keine Einträge'), findsOneWidget);
+    expect(find.text('No entries yet'), findsOneWidget);
     expect(find.byType(Card), findsNothing);
   });
 
@@ -73,8 +73,8 @@ void main() {
     await tester.tap(find.text('Bench press'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Satz 1'), findsOneWidget);
-    expect(find.text('Satz 2'), findsOneWidget);
+    expect(find.text('Set 1'), findsOneWidget);
+    expect(find.text('Set 2'), findsOneWidget);
     expect(find.textContaining('15 Wdh.'), findsOneWidget);
     expect(find.textContaining('40 kg'), findsOneWidget);
     expect(find.textContaining('10RM ~'), findsNWidgets(2));
@@ -100,7 +100,7 @@ void main() {
     await tester.tap(find.text('Delete'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Noch keine Einträge'), findsOneWidget);
+    expect(find.text('No entries yet'), findsOneWidget);
     expect(
       await (harness.database.workouts.select()..where((w) => w.id.equals(workoutId))).get(),
       isEmpty,
@@ -127,6 +127,6 @@ void main() {
     await pumpHistoryPage(tester, harness);
 
     expect(find.text('Squat'), findsNothing);
-    expect(find.text('Noch keine Einträge'), findsOneWidget);
+    expect(find.text('No entries yet'), findsOneWidget);
   });
 }
