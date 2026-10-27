@@ -32,6 +32,8 @@ class BackupReceiver : BroadcastReceiver() {
         Log.d("BackupReceiver", "onReceive")
         if (context == null) return
 
+        var backupFile: DocumentFile? = null
+        var backupCompleted = false
         try {
             val (enabled, backupPath) = getSettings(context)
             if (!enabled) return
@@ -82,6 +84,7 @@ class BackupReceiver : BroadcastReceiver() {
                 failBackup(context, getBackupLocalization(context, "backupFailureCreateFile"))
                 return
             }
+            backupFile = file
 
             notificationBuilder = notificationBuilder.setContentText(file.name)
 
@@ -142,6 +145,8 @@ class BackupReceiver : BroadcastReceiver() {
                         }
                     }
                 }
+                // Keep the archive only after the ZIP stream closed successfully.
+                backupCompleted = true
                 notificationBuilder = notificationBuilder.setContentTitle(
                     getBackupLocalization(context, "backupCompletedTitle")
                 )
@@ -159,6 +164,14 @@ class BackupReceiver : BroadcastReceiver() {
         } catch (error: Exception) {
             Log.e("BackupReceiver", "Error during backup: ${error.message}", error)
             failBackup(context, getBackupLocalization(context, "backupFailureUnknown"))
+        } finally {
+            if (!backupCompleted) {
+                try {
+                    backupFile?.delete()
+                } catch (cleanupError: Exception) {
+                    Log.w("BackupReceiver", "Could not remove incomplete backup file", cleanupError)
+                }
+            }
         }
     }
 
