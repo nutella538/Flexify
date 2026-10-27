@@ -211,10 +211,7 @@ void main() {
     await tester.pumpWidget(historyApp(await settings()));
     await tester.pumpAndSettle();
 
-    // The exercise tile is nested inside the completed-workout expansion.
-    await tester.tap(find.byType(ExpansionTile).first);
-    await tester.pumpAndSettle();
-    // Exercises are nested inside the completed-workout expansion.
+    // Open the completed workout to reveal its exercise tile.
     await tester.tap(find.byType(ExpansionTile).first);
     await tester.pumpAndSettle();
     expect(find.text('Deadlift'), findsOneWidget);
