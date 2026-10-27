@@ -128,7 +128,7 @@ class _HistoryPageWidgetState extends State<_HistoryPageWidget> {
         child: SafeArea(
           child: SingleChildScrollView(
             controller: scroll,
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               top: 8,
               bottom: floatingActionButtonListPadding,
             ),
