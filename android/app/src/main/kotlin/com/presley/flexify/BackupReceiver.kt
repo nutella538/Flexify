@@ -56,11 +56,15 @@ class BackupReceiver : BroadcastReceiver() {
             channel.description = getBackupLocalization(context, "backupChannelDescription")
             notificationManager.createNotificationChannel(channel)
 
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) return
+            // Backups must still run when notifications are disabled. On Android 13+
+            // the notification permission is optional; returning here silently skipped
+            // every scheduled backup for users who denied it.
+            val canPostNotifications =
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
 
             val dir = DocumentFile.fromTreeUri(context, backupUri)
             if (dir == null) {
@@ -141,7 +145,14 @@ class BackupReceiver : BroadcastReceiver() {
                 notificationBuilder = notificationBuilder.setContentTitle(
                     getBackupLocalization(context, "backupCompletedTitle")
                 )
-                notificationManager.notify(2, notificationBuilder.build())
+                if (canPostNotifications) {
+                    notificationManager.notify(2, notificationBuilder.build())
+                } else {
+                    Log.i(
+                        "BackupReceiver",
+                        "Backup completed without a notification because notification permission is denied"
+                    )
+                }
             } finally {
                 temporaryDatabase.delete()
             }
