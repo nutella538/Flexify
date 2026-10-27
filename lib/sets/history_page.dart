@@ -107,7 +107,6 @@ class _HistoryPageWidgetState extends State<_HistoryPageWidget> {
   Widget build(BuildContext context) {
     final desktop = isDesktopLayout(context);
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: desktop
           ? AppBar(
               title: Text(context.l10n.navHistory),
@@ -126,188 +125,15 @@ class _HistoryPageWidgetState extends State<_HistoryPageWidget> {
       body: ResponsiveContent(
         maxWidth: desktopDataContentMaxWidth,
         desktopPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-        child: StreamBuilder(
-          stream: stream,
-          builder: (context, snapshot) {
-            return Stack(
-              children: [
-                Positioned.fill(
-                  child: Column(
-                    children: [
-                      Padding(
-                        // Keep completed workouts below the pinned history search bar.
-                        padding: const EdgeInsets.only(
-                          top: appSearchHeight + 8,
-                        ),
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 240),
-                          child: const SingleChildScrollView(
-                            child: WorkoutHistorySection(),
-                          ),
-                        ),
-                      ),
-                      if (snapshot.data?.isEmpty == true)
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: appSearchHeight,
-                            ),
-                            child: AppEmptyState(
-                              icon: Icons.history_rounded,
-                              title: context.l10n.noEntriesYet,
-                              message: context.l10n.historyEmptyMessage,
-                              actionLabel: context.l10n.addSet,
-                              actionIcon: Icons.add_rounded,
-                              onAction: onAdd,
-                            ),
-                          ),
-                        ),
-                      if (snapshot.hasError)
-                        Expanded(
-                          child: ErrorWidget(context.l10n.unexpectedError),
-                        ),
-                      if (snapshot.hasData && snapshot.data!.isNotEmpty)
-                        Expanded(
-                          child: Builder(
-                            builder: (context) {
-                              final groupHistory = context
-                                  .select<Setting, bool>(
-                                    (settings) => settings.groupHistory,
-                                  );
-
-                              if (groupHistory) {
-                                final dayGroups = getHistoryDayGroups(
-                                  snapshot.data!,
-                                );
-                                return GroupHistory(
-                                  scroll: scroll,
-                                  days: dayGroups,
-                                  onSelect: (id) {
-                                    setState(() {
-                                      _selection.toggle(id);
-                                    });
-                                  },
-                                  selected: _selection.selected,
-                                  onNext: () {
-                                    setState(() {
-                                      limit += 100;
-                                    });
-                                    setStream();
-                                  },
-                                );
-                              } else
-                                return HistoryList(
-                                  scroll: scroll,
-                                  topPadding: appSearchHeight + 8,
-                                  sets: snapshot.data!,
-                                  onSelect: (id) {
-                                    setState(() {
-                                      _selection.toggle(id);
-                                    });
-                                  },
-                                  selected: _selection.selected,
-                                  onNext: () {
-                                    setState(() {
-                                      limit += 100;
-                                    });
-                                    setStream();
-                                  },
-                                );
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: AppSearch(
-                    hintText: context.l10n.searchHistory,
-                    controller: _selection,
-                    filter: Filters(
-                      repsGtCtrl: repsGt,
-                      repsLtCtrl: repsLt,
-                      weightGtCtrl: weightGt,
-                      weightLtCtrl: weightLt,
-                      setStream: () {
-                        setState(() {
-                          limit = 100;
-                        });
-                        setStream();
-                      },
-                      endDate: endDate,
-                      startDate: startDate,
-                      setEnd: (value) {
-                        setState(() {
-                          endDate = value;
-                          limit = 100;
-                        });
-                        setStream();
-                      },
-                      setStart: (value) {
-                        setState(() {
-                          startDate = value;
-                          limit = 100;
-                        });
-                        setStream();
-                      },
-                      category: category,
-                      setCategory: (value) {
-                        setState(() {
-                          category = value;
-                          limit = 100;
-                        });
-                        setStream();
-                      },
-                    ),
-                    onShare: () async {
-                      final exerciseSets = snapshot.data!
-                          .where(
-                            (exerciseSet) =>
-                                _selection.contains(exerciseSet.id),
-                          )
-                          .toList();
-                      final summaries = exerciseSets
-                          .map(
-                            (exerciseSet) =>
-                                "${formatDisplayNumber(context, exerciseSet.reps)}×${formatDisplayNumber(context, exerciseSet.weight)}${displayMeasurementUnit(context.l10n, exerciseSet.unit)} ${exerciseSet.name}",
-                          )
-                          .join(', ');
-                      await SharePlus.instance.share(
-                        ShareParams(text: context.l10n.shareWorkout(summaries)),
-                      );
-                      if (!mounted) return;
-                      setState(() {
-                        _selection.clear();
-                      });
-                    },
-                    onChange: (value) {
-                      setState(() {
-                        search = value;
-                        limit = 100;
-                      });
-                      setStream();
-                    },
-                    onDelete: () async {
-                      await deleteExerciseSets(db, _selection.selected);
-                      setState(() {
-                        _selection.clear();
-                      });
-                    },
-                    onSelectAll: selectAllFiltered,
-                    onEdit: () => Navigator.of(context).push(
-                      FlexPageRoute(
-                        builder: (context) =>
-                            EditSetsPage(ids: _selection.toList()),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            );
-          },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: scroll,
+            padding: const EdgeInsets.only(
+              top: 8,
+              bottom: floatingActionButtonListPadding,
+            ),
+            child: const WorkoutHistorySection(),
+          ),
         ),
       ),
       floatingActionButton: desktop
