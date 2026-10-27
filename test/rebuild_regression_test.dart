@@ -214,6 +214,9 @@ void main() {
     // The exercise tile is nested inside the completed-workout expansion.
     await tester.tap(find.byType(ExpansionTile).first);
     await tester.pumpAndSettle();
+    // Exercises are nested inside the completed-workout expansion.
+    await tester.tap(find.byType(ExpansionTile).first);
+    await tester.pumpAndSettle();
     expect(find.text('Deadlift'), findsOneWidget);
     await tester.tap(find.text('Deadlift'));
     final frames = await countFramesToSettle(tester);
