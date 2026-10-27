@@ -134,10 +134,16 @@ class _HistoryPageWidgetState extends State<_HistoryPageWidget> {
                 Positioned.fill(
                   child: Column(
                     children: [
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 240),
-                        child: const SingleChildScrollView(
-                          child: WorkoutHistorySection(),
+                      Padding(
+                        // Keep completed workouts below the pinned history search bar.
+                        padding: const EdgeInsets.only(
+                          top: appSearchHeight + 8,
+                        ),
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxHeight: 240),
+                          child: const SingleChildScrollView(
+                            child: WorkoutHistorySection(),
+                          ),
                         ),
                       ),
                       if (snapshot.data?.isEmpty == true)
