@@ -1,5 +1,6 @@
 import 'package:flexify/animated_fab.dart';
 import 'package:flexify/app_search.dart';
+import 'package:flexify/bottom_nav.dart';
 import 'package:flexify/constants.dart';
 import 'package:flexify/database/body_weight_repository.dart';
 import 'package:flexify/database/database.dart';
