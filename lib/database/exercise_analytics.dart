@@ -183,10 +183,12 @@ double _distanceInUnit(ExerciseSetView set, String target) {
   return displayDistance(target, metres);
 }
 
-double _oneRepMax(double weight, double reps) {
-  final factor = 1.0278 - 0.0278 * reps;
-  if (factor == 0) return 0;
-  return weight >= 0 ? weight / factor : weight * factor;
+double _tenRepMax(double weight, double reps) {
+  if (weight <= 0 || reps <= 0) return 0;
+  // Keep the same estimate used by the workout plan: estimated 10RM from
+  // the performed load and reps. This makes the graph comparable to the
+  // 10RM values shown in workout history and progression recommendations.
+  return weight * (30 + reps) / 40;
 }
 
 ExerciseSetView _latest(List<ExerciseSetView> sets) =>
@@ -210,10 +212,10 @@ ExerciseSetView _bestRepsSet(List<ExerciseSetView> sets) {
   });
 }
 
-ExerciseSetView _bestOneRepMaxSet(List<ExerciseSetView> sets, String target) {
+ExerciseSetView _bestTenRepMaxSet(List<ExerciseSetView> sets, String target) {
   return sets.reduce((a, b) {
-    final aOrm = _oneRepMax(_loadInUnit(a, target), a.reps);
-    final bOrm = _oneRepMax(_loadInUnit(b, target), b.reps);
+    final aOrm = _tenRepMax(_loadInUnit(a, target), a.reps);
+    final bOrm = _tenRepMax(_loadInUnit(b, target), b.reps);
     return bOrm > aOrm ? b : a;
   });
 }
@@ -245,8 +247,8 @@ StrengthData _strengthBucket(
       value = representative.reps;
       break;
     case StrengthMetric.oneRepMax:
-      representative = _bestOneRepMaxSet(sets, target);
-      value = _oneRepMax(
+      representative = _bestTenRepMaxSet(sets, target);
+      value = _tenRepMax(
         _loadInUnit(representative, target),
         representative.reps,
       );
