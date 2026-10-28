@@ -68,6 +68,7 @@ class _StartPlanPageState extends State<StartPlanPage>
   String? _image;
   String? _selectedExerciseName;
   double? _estimatedTenRm;
+  double? _lastSetTenRm;
   double? _recommendedNextWeight;
   int _targetReps = 15;
   int _tenRmRequestId = 0;
@@ -382,31 +383,41 @@ class _StartPlanPageState extends State<StartPlanPage>
               '${formatDisplayNumber(context, currentSetTenRm)} $_unit',
               style: Theme.of(context).textTheme.titleSmall,
             ),
-          if (historicalTenRm == null)
+          if (_lastSetTenRm != null) ...[
+            if (currentSetTenRm != null) const SizedBox(height: 4),
+            Text(
+              '${context.l10n.lastSetTenRm}: '
+              '${formatDisplayNumber(context, _lastSetTenRm!)} $_unit',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ] else
             Padding(
               padding: const EdgeInsets.only(top: 4),
               child: Text(
                 context.l10n.tenRmNotEnoughData,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-            )
-          else ...[
-            if (currentSetTenRm != null) const SizedBox(height: 4),
+            ),
+          if (recommendation != null) ...[
+            const SizedBox(height: 8),
             Text(
-              '${context.l10n.estimatedTenRm}: '
-              '${formatDisplayNumber(context, historicalTenRm)} $_unit',
+              '${context.l10n.nextSetRecommendation}: '
+              '${formatDisplayNumber(context, recommendation)} $_unit × '
+              '$_targetReps ${context.l10n.repsLabel}'
+              '${recommendationTenRm == null ? '' : '  ·  10RM ≈ ${formatDisplayNumber(context, recommendationTenRm)} $_unit'}',
               style: Theme.of(context).textTheme.bodySmall,
             ),
-            if (recommendation != null) ...[
-              const SizedBox(height: 4),
-              Text(
-                '${context.l10n.nextSetRecommendation}: '
-                '${formatDisplayNumber(context, recommendation)} $_unit × '
-                '$_targetReps ${context.l10n.repsLabel}'
-                '${recommendationTenRm == null ? '' : '  ·  10RM ≈ ${formatDisplayNumber(context, recommendationTenRm)} $_unit'}',
-                style: Theme.of(context).textTheme.bodySmall,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () {
+                  _weight.text = formatDisplayNumber(context, recommendation);
+                  setState(() {});
+                },
+                icon: const Icon(Icons.arrow_upward_rounded),
+                label: Text(context.l10n.applyRecommendedWeight),
               ),
-            ],
+            ),
           ],
         ],
       ),
@@ -792,6 +803,7 @@ class _StartPlanPageState extends State<StartPlanPage>
 
     setState(() {
       _estimatedTenRm = tenRm;
+      _lastSetTenRm = previousSessionTenRm;
       _recommendedNextWeight = recommendation;
       _targetReps = targetReps;
     });
@@ -1209,6 +1221,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     _notes.text = '';
     _tenRmRequestId++;
     _estimatedTenRm = null;
+    _lastSetTenRm = null;
     _recommendedNextWeight = null;
     _targetReps = 15;
   }
