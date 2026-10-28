@@ -503,9 +503,16 @@
   "workoutStartFailed": "Antrenman başlatılamadı.",
   "workoutFinishFailed": "Antrenman bitirilemedi.",
   "workoutDuration": "Antrenman süresi",
-  "estimatedTenRm": "Tahmini 10RM",
   "nextSetRecommendation": "Sonraki set için öneri",
   "tenRmNotEnoughData": "10RM tahmini için henüz yeterli antrenman verisi yok.",
   "targetReps": "Hedef tekrar",
-  "currentSetTenRm": "Bu setten 10RM"
+  "currentSetTenRm": "Bu setten 10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }
