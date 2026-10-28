@@ -68,6 +68,32 @@ void main() {
     });
   });
 
+  group('recommendProgressiveNextSetWeight', () {
+    test('always increases load and shows a higher 10RM at target reps', () {
+      final weight = recommendProgressiveNextSetWeight(
+        currentWeight: 50,
+        currentReps: 10,
+        step: 2.5,
+        targetReps: 15,
+      );
+
+      expect(weight, greaterThan(50));
+      expect(weight * (30 + 15) / 40, greaterThan(50));
+    });
+
+    test('does not regress when current reps are below the target', () {
+      final weight = recommendProgressiveNextSetWeight(
+        currentWeight: 50,
+        currentReps: 12,
+        step: 2.5,
+        targetReps: 15,
+      );
+
+      expect(weight, 52.5);
+      expect(weight * (30 + 15) / 40, greaterThan(50 * (30 + 12) / 40));
+    });
+  });
+
   group('recommendNextSetWeight', () {
     test('reduces the load when fewer than 15 reps are achieved', () {
       expect(
