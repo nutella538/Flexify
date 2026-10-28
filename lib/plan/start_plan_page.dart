@@ -742,20 +742,36 @@ class _StartPlanPageState extends State<StartPlanPage>
               ..limit(1))
             .getSingleOrNull();
     final targetReps = planExercise?.targetReps ?? 15;
-    final lastSet = latestSet ?? (history.isEmpty ? null : history.first);
-    double? lastWeight;
-    if (lastSet != null && !lastSet.cardio) {
-      final loadKg = canonicalExerciseSetLoad(lastSet.unit, lastSet.weight);
-      if (loadKg != null) lastWeight = displayLoad(_unit, loadKg);
+
+    // Match the recommendation to the same baseline used to prefill the first
+    // set: the first set from the latest workout containing this exercise.
+    // This avoids basing the next workout's first set on a later, often lighter
+    // set from the previous workout.
+    final progressionSet = await getFirstOfLastSession(
+      exercise?.id ?? -1,
+    );
+    double? previousSessionTenRm;
+    if (progressionSet != null && !progressionSet.cardio) {
+      final loadKg = canonicalExerciseSetLoad(
+        progressionSet.unit,
+        progressionSet.weight,
+      );
+      if (loadKg != null) {
+        previousSessionTenRm = estimateTenRm([
+          TenRmSet(
+            weight: displayLoad(_unit, loadKg),
+            reps: progressionSet.reps,
+          ),
+        ]);
+      }
     }
 
     final step = weightStep(exerciseName, _unit);
-    final recommendation = tenRm == null
+    final progressionBaseline = previousSessionTenRm ?? tenRm;
+    final recommendation = progressionBaseline == null
         ? null
-        : recommendNextSetWeight(
-            tenRm: tenRm,
-            lastWeight: lastWeight ?? 0,
-            lastReps: lastSet?.reps ?? 0,
+        : recommendProgressiveFirstSetWeight(
+            previousTenRm: progressionBaseline,
             step: step,
             targetReps: targetReps,
           );
