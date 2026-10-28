@@ -70,3 +70,30 @@ double recommendNextSetWeight({
 
 double _roundToStep(double weight, double step) =>
     (weight / step).round() * step;
+
+
+/// Recommends the smallest load increment whose estimated 10RM is strictly
+/// higher than the previous session's first-set 10RM at the target rep count.
+double recommendProgressiveFirstSetWeight({
+  required double previousTenRm,
+  required double step,
+  int targetReps = 15,
+}) {
+  final safeStep = step > 0 && step.isFinite ? step : 1.0;
+  final safeTarget = targetReps.clamp(1, 50);
+  if (!previousTenRm.isFinite || previousTenRm <= 0) return 0;
+
+  var candidate = _roundUpToStep(
+    previousTenRm * 40 / (30 + safeTarget),
+    safeStep,
+  );
+  // A rounded value can still estimate to the same 10RM. Advance until it is
+  // strictly higher, allowing for floating-point rounding noise.
+  while (candidate * (30 + safeTarget) / 40 <= previousTenRm + 1e-9) {
+    candidate += safeStep;
+  }
+  return candidate;
+}
+
+double _roundUpToStep(double weight, double step) =>
+    (weight / step).ceil() * step;
