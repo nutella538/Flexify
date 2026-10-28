@@ -1182,6 +1182,7 @@ class _StartPlanPageState extends State<StartPlanPage>
       } else {
         _clearExerciseSetTextFields();
       }
+      _selectedExerciseName = exercise.name;
     });
     await _refreshTenRm(exercise.name);
   }
@@ -1205,7 +1206,6 @@ class _StartPlanPageState extends State<StartPlanPage>
     _cardio = false;
     _category = null;
     _image = null;
-    _selectedExerciseName = null;
     _notes.text = '';
     _tenRmRequestId++;
     _estimatedTenRm = null;
