@@ -66,6 +66,7 @@ class _StartPlanPageState extends State<StartPlanPage>
   List<Rpm>? _rpms;
   String? _category;
   String? _image;
+  String? _selectedExerciseName;
   double? _estimatedTenRm;
   double? _recommendedNextWeight;
   int _targetReps = 15;
@@ -348,7 +349,22 @@ class _StartPlanPageState extends State<StartPlanPage>
         ? weight * (30 + reps) / 40
         : null;
     final historicalTenRm = _estimatedTenRm;
-    final recommendation = _recommendedNextWeight;
+    final selectedName = _selectedExerciseName;
+    final recommendation = weight != null &&
+            reps != null &&
+            weight > 0 &&
+            reps > 0 &&
+            selectedName != null
+        ? recommendProgressiveNextSetWeight(
+            currentWeight: weight,
+            currentReps: reps,
+            step: weightStep(selectedName, _unit),
+            targetReps: _targetReps,
+          )
+        : _recommendedNextWeight;
+    final recommendationTenRm = recommendation != null && recommendation > 0
+        ? recommendation * (30 + _targetReps) / 40
+        : null;
 
     return Container(
       width: double.infinity,
@@ -386,7 +402,8 @@ class _StartPlanPageState extends State<StartPlanPage>
               Text(
                 '${context.l10n.nextSetRecommendation}: '
                 '${formatDisplayNumber(context, recommendation)} $_unit × '
-                '$_targetReps ${context.l10n.repsLabel}',
+                '$_targetReps ${context.l10n.repsLabel}'
+                '${recommendationTenRm == null ? '' : '  ·  10RM ≈ ${formatDisplayNumber(context, recommendationTenRm)} $_unit'}',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
@@ -1153,6 +1170,7 @@ class _StartPlanPageState extends State<StartPlanPage>
 
     setState(() {
       _selected = selected;
+      _selectedExerciseName = exercise.name;
       if (last != null) {
         _updateExerciseSetTextFields(last);
       } else if (template != null) {
@@ -1187,6 +1205,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     _cardio = false;
     _category = null;
     _image = null;
+    _selectedExerciseName = null;
     _notes.text = '';
     _tenRmRequestId++;
     _estimatedTenRm = null;
