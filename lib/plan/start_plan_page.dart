@@ -67,7 +67,6 @@ class _StartPlanPageState extends State<StartPlanPage>
   String? _category;
   String? _image;
   String? _selectedExerciseName;
-  double? _estimatedTenRm;
   double? _lastSetTenRm;
   double? _recommendedNextWeight;
   int _targetReps = 15;
@@ -349,7 +348,6 @@ class _StartPlanPageState extends State<StartPlanPage>
             reps > 0
         ? weight * (30 + reps) / 40
         : null;
-    final historicalTenRm = _estimatedTenRm;
     final selectedName = _selectedExerciseName;
     final recommendation = weight != null &&
             reps != null &&
@@ -802,8 +800,9 @@ class _StartPlanPageState extends State<StartPlanPage>
           );
 
     setState(() {
-      _estimatedTenRm = tenRm;
-      _lastSetTenRm = previousSessionTenRm;
+      _lastSetTenRm = recentSets.isEmpty
+          ? null
+          : estimateTenRm([recentSets.first]);
       _recommendedNextWeight = recommendation;
       _targetReps = targetReps;
     });
@@ -1220,7 +1219,6 @@ class _StartPlanPageState extends State<StartPlanPage>
     _image = null;
     _notes.text = '';
     _tenRmRequestId++;
-    _estimatedTenRm = null;
     _lastSetTenRm = null;
     _recommendedNextWeight = null;
     _targetReps = 15;
