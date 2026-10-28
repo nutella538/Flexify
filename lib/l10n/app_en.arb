@@ -2086,9 +2086,13 @@
   "@workoutDuration": {
     "description": "Workout session duration text."
   },
-  "estimatedTenRm": "Estimated 10RM",
-  "@estimatedTenRm": {
-    "description": "Label for the automatically estimated ten-repetition maximum."
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
   },
   "nextSetRecommendation": "Next-set recommendation",
   "@nextSetRecommendation": {
