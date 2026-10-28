@@ -68,9 +68,9 @@ double recommendNextSetWeight({
   return _roundToStep(lastWeight, safeStep);
 }
 
-/// Recommends a genuinely progressive next-set load based on the set just
-/// entered. The load is always heavier than the current set and its estimated
-/// 10RM at [targetReps] is strictly higher than the current set's estimated 10RM.
+/// Recommends a next-set load based on the set just entered. The load may be
+/// lower than the current load, but its estimated 10RM at [targetReps] must be
+/// strictly higher than the current set's estimated 10RM.
 double recommendProgressiveNextSetWeight({
   required double currentWeight,
   required double currentReps,
@@ -89,15 +89,9 @@ double recommendProgressiveNextSetWeight({
   final currentTenRm = currentWeight * (30 + currentReps) / 40;
   final minimumLoadForHigherTenRm =
       currentTenRm * 40 / (30 + safeTarget);
-  var candidate = _roundUpToStep(
-    currentWeight + safeStep > minimumLoadForHigherTenRm
-        ? currentWeight + safeStep
-        : minimumLoadForHigherTenRm,
-    safeStep,
-  );
+  var candidate = _roundUpToStep(minimumLoadForHigherTenRm, safeStep);
 
-  while (candidate <= currentWeight ||
-      candidate * (30 + safeTarget) / 40 <= currentTenRm + 1e-9) {
+  while (candidate * (30 + safeTarget) / 40 <= currentTenRm + 1e-9) {
     candidate += safeStep;
   }
   return candidate;
