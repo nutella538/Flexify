@@ -707,10 +707,7 @@ class _StartPlanPageState extends State<StartPlanPage>
     await _refreshTenRm(exercises[_selected].exercise.name);
   }
 
-  Future<void> _refreshTenRm(
-    String exerciseName, {
-    ExerciseSetView? latestSet,
-  }) async {
+  Future<void> _refreshTenRm(String exerciseName) async {
     final requestId = ++_tenRmRequestId;
     final history = await getExerciseSetsForExercise(
       db,
@@ -1114,7 +1111,7 @@ class _StartPlanPageState extends State<StartPlanPage>
         _updateExerciseSetTextFields(exerciseSet);
         _lastSaved = DateTime.now();
       });
-      await _refreshTenRm(exercise, latestSet: exerciseSet);
+      await _refreshTenRm(exercise);
       if (!mounted) return;
       if (finishedExercise) await select(_selected + 1);
 
