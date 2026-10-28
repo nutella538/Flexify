@@ -2057,5 +2057,13 @@
   "nextSetRecommendation": "توصية للمجموعة التالية",
   "tenRmNotEnoughData": "لا توجد بيانات تدريب كافية لتقدير 10RM بعد.",
   "targetReps": "التكرارات المستهدفة",
-  "currentSetTenRm": "10RM من هذه المجموعة"
+  "currentSetTenRm": "10RM من هذه المجموعة",
+  "lastSetTenRm": "10RM من آخر مجموعة",
+  "@lastSetTenRm": {
+    "description": "تقدير الحد الأقصى لعشر تكرارات محسوب من أول مجموعة في أحدث تمرين."
+  },
+  "applyRecommendedWeight": "استخدام الوزن الموصى به",
+  "@applyRecommendedWeight": {
+    "description": "زر ينسخ الوزن الموصى به إلى حقل الوزن."
+  }
 }
