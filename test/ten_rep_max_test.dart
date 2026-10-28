@@ -44,6 +44,30 @@ void main() {
     });
   });
 
+  group('recommendProgressiveFirstSetWeight', () {
+    test('chooses a load that produces a higher 10RM than last session', () {
+      final weight = recommendProgressiveFirstSetWeight(
+        previousTenRm: 50,
+        step: 2.5,
+        targetReps: 15,
+      );
+
+      expect(weight, 45);
+      expect(weight * (30 + 15) / 40, greaterThan(50));
+    });
+
+    test('increases when rounding would otherwise keep the same 10RM', () {
+      final weight = recommendProgressiveFirstSetWeight(
+        previousTenRm: 50,
+        step: 2.5,
+        targetReps: 10,
+      );
+
+      expect(weight, 52.5);
+      expect(weight * (30 + 10) / 40, greaterThan(50));
+    });
+  });
+
   group('recommendNextSetWeight', () {
     test('reduces the load when fewer than 15 reps are achieved', () {
       expect(
