@@ -503,9 +503,16 @@
   "workoutStartFailed": "ワークアウトを開始できませんでした。",
   "workoutFinishFailed": "ワークアウトを終了できませんでした。",
   "workoutDuration": "ワークアウト時間",
-  "estimatedTenRm": "推定10RM",
   "nextSetRecommendation": "次のセットの推奨",
   "tenRmNotEnoughData": "10RMを推定するためのトレーニングデータがまだ不足しています。",
   "targetReps": "目標回数",
-  "currentSetTenRm": "このセットからの10RM"
+  "currentSetTenRm": "このセットからの10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

@@ -503,9 +503,16 @@
   "workoutStartFailed": "Impossibile avviare l’allenamento.",
   "workoutFinishFailed": "Impossibile terminare l’allenamento.",
   "workoutDuration": "Durata dell’allenamento",
-  "estimatedTenRm": "10RM stimato",
   "nextSetRecommendation": "Consiglio per la serie successiva",
   "tenRmNotEnoughData": "Dati di allenamento insufficienti per stimare il 10RM.",
   "targetReps": "Ripetizioni obiettivo",
-  "currentSetTenRm": "10RM da questa serie"
+  "currentSetTenRm": "10RM da questa serie",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

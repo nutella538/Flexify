@@ -2053,9 +2053,16 @@
   "workoutStartFailed": "شروع تمرین ممکن نبود.",
   "workoutFinishFailed": "پایان تمرین ممکن نبود.",
   "workoutDuration": "مدت تمرین",
-  "estimatedTenRm": "برآورد 10RM",
   "nextSetRecommendation": "پیشنهاد برای ست بعدی",
   "tenRmNotEnoughData": "هنوز دادهٔ تمرینی کافی برای برآورد 10RM وجود ندارد.",
   "targetReps": "تکرار هدف",
-  "currentSetTenRm": "10RM از این ست"
+  "currentSetTenRm": "10RM از این ست",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }
