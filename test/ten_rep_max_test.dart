@@ -69,7 +69,7 @@ void main() {
   });
 
   group('recommendProgressiveNextSetWeight', () {
-    test('always increases load and shows a higher 10RM at target reps', () {
+    test('may lower the load while increasing estimated 10RM', () {
       final weight = recommendProgressiveNextSetWeight(
         currentWeight: 50,
         currentReps: 10,
@@ -77,11 +77,11 @@ void main() {
         targetReps: 15,
       );
 
-      expect(weight, greaterThan(50));
-      expect(weight * (30 + 15) / 40, greaterThan(50));
+      expect(weight, 45);
+      expect(weight * (30 + 15) / 40, greaterThan(50 * (30 + 10) / 40));
     });
 
-    test('does not regress when current reps are below the target', () {
+    test('keeps estimated 10RM progressing when current reps are below target', () {
       final weight = recommendProgressiveNextSetWeight(
         currentWeight: 50,
         currentReps: 12,
@@ -89,7 +89,7 @@ void main() {
         targetReps: 15,
       );
 
-      expect(weight, 52.5);
+      expect(weight, 47.5);
       expect(weight * (30 + 15) / 40, greaterThan(50 * (30 + 12) / 40));
     });
   });
