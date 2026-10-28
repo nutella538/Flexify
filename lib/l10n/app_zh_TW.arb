@@ -503,9 +503,16 @@
   "workoutStartFailed": "無法開始訓練。",
   "workoutFinishFailed": "無法結束訓練。",
   "workoutDuration": "訓練時間",
-  "estimatedTenRm": "估計的10RM",
   "nextSetRecommendation": "下一組建議",
   "tenRmNotEnoughData": "訓練資料不足，目前無法估計10RM。",
   "targetReps": "目標重複次數",
-  "currentSetTenRm": "本組的10RM"
+  "currentSetTenRm": "本組的10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }
