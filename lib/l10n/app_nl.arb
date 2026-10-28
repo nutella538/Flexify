@@ -503,9 +503,16 @@
   "workoutStartFailed": "Training starten is mislukt.",
   "workoutFinishFailed": "Training beëindigen is mislukt.",
   "workoutDuration": "Trainingsduur",
-  "estimatedTenRm": "Geschatte 10RM",
   "nextSetRecommendation": "Aanbeveling voor de volgende set",
   "tenRmNotEnoughData": "Nog niet genoeg trainingsgegevens om een 10RM te schatten.",
   "targetReps": "Doelherhalingen",
-  "currentSetTenRm": "10RM uit deze set"
+  "currentSetTenRm": "10RM uit deze set",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }
