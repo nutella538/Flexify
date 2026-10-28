@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "Nada coincide con “{query}”. Puedes crearlo como un plan nuevo.",
   "createPlan": "Crear plan",
   "createNamedPlan": "Crear “{name}”",
-  "setNumber": "Serie {number}"
+  "setNumber": "Serie {number}",
+  "workoutStart": "Iniciar entrenamiento",
+  "workoutFinish": "Finalizar entrenamiento",
+  "workoutFinishConfirm": "¿Finalizar el entrenamiento?",
+  "workoutFinishDescription": "Se guardarán la duración del entrenamiento y tus series.",
+  "workoutStartFirst": "Inicia el entrenamiento antes de guardar series.",
+  "workoutStartFailed": "No se pudo iniciar el entrenamiento.",
+  "workoutFinishFailed": "No se pudo finalizar el entrenamiento.",
+  "workoutDuration": "Duración del entrenamiento",
+  "nextSetRecommendation": "Recomendación para la siguiente serie",
+  "tenRmNotEnoughData": "Aún no hay suficientes datos de entrenamiento para estimar el 10RM.",
+  "targetReps": "Repeticiones objetivo",
+  "currentSetTenRm": "10RM de esta serie",
+  "lastSetTenRm": "10RM de la última serie",
+  "@lastSetTenRm": {
+    "description": "Estimación del máximo de diez repeticiones calculada a partir de la primera serie del entrenamiento más reciente."
+  },
+  "applyRecommendedWeight": "Usar el peso recomendado",
+  "@applyRecommendedWeight": {
+    "description": "Botón que copia el peso recomendado en el campo de peso."
+  }
 }

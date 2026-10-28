@@ -2044,5 +2044,25 @@
         "type": "int"
       }
     }
+  },
+  "workoutStart": "Mulai latihan",
+  "workoutFinish": "Selesaikan latihan",
+  "workoutFinishConfirm": "Selesaikan latihan?",
+  "workoutFinishDescription": "Durasi latihan dan set Anda akan disimpan.",
+  "workoutStartFirst": "Mulai latihan sebelum menyimpan set.",
+  "workoutStartFailed": "Latihan tidak dapat dimulai.",
+  "workoutFinishFailed": "Latihan tidak dapat diselesaikan.",
+  "workoutDuration": "Durasi latihan",
+  "nextSetRecommendation": "Saran untuk set berikutnya",
+  "tenRmNotEnoughData": "Data latihan belum cukup untuk memperkirakan 10RM.",
+  "targetReps": "Repetisi target",
+  "currentSetTenRm": "10RM dari set ini",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
   }
 }

@@ -177,53 +177,91 @@ void main() {
     expect(frames, lessThan(4), reason: 'Delete settled in $frames frames');
   });
 
-  // --- Selection animation --------------------------------------------
+  // --- Workout history expansion --------------------------------------
 
-  testWidgets('entering selection mode settles within 45 frames', (
+  testWidgets('expanding a completed workout reveals its exercise sets', (
     tester,
   ) async {
-    await insertSet('Deadlift');
+    final startedAt = DateTime.now();
+    final workoutId = await db.workouts.insertOne(
+      WorkoutsCompanion.insert(
+        startedAt: startedAt,
+        endedAt: Value(startedAt.add(const Duration(minutes: 30))),
+      ),
+    );
+    final exercise = await ensureExerciseFixture(db, 'Deadlift');
+    await insertExerciseSet(
+      db,
+      exerciseId: exercise.id,
+      workoutId: workoutId,
+      exerciseSet: ExerciseSetView(
+        id: 0,
+        name: 'Deadlift',
+        reps: 5,
+        weight: 100,
+        unit: 'kg',
+        created: startedAt,
+        bodyWeight: 0,
+        duration: 0,
+        distance: 0,
+        cardio: false,
+      ),
+    );
+
     await tester.pumpWidget(historyApp(await settings()));
     await tester.pumpAndSettle();
 
-    // longPress recognition takes kLongPressTimeout (500ms = ~31 frames at 16ms),
-    // then AnimatedSwitcher animates the leading icon (150ms = ~10 frames).
-    // Measured baseline: 39 frames.
-    await tester.longPress(find.text('5 x 100 kg'));
+    // Open the completed workout to reveal its exercise tile.
+    await tester.tap(find.byType(ExpansionTile).first);
+    await tester.pumpAndSettle();
+    expect(find.text('Deadlift'), findsOneWidget);
+    await tester.tap(find.text('Deadlift'));
     final frames = await countFramesToSettle(tester);
-
-    print(
-      '[perf] Enter selection mode: $frames frames (~31 longpress + ~10 AnimatedSwitcher)',
-    );
-    expect(
-      frames,
-      lessThan(45),
-      reason: 'Entering selection mode took $frames frames',
-    );
+    expect(find.text('Set 1'), findsOneWidget);
+    expect(find.textContaining('100 kg'), findsOneWidget);
+    expect(frames, lessThan(45), reason: 'Expanding workout history took $frames frames');
   });
 
-  testWidgets('exiting selection mode settles within 45 frames', (
+  testWidgets('completed workout can be collapsed after viewing its sets', (
     tester,
   ) async {
-    await insertSet('OHP');
+    final startedAt = DateTime.now();
+    final workoutId = await db.workouts.insertOne(
+      WorkoutsCompanion.insert(
+        startedAt: startedAt,
+        endedAt: Value(startedAt.add(const Duration(minutes: 30))),
+      ),
+    );
+    final exercise = await ensureExerciseFixture(db, 'OHP');
+    await insertExerciseSet(
+      db,
+      exerciseId: exercise.id,
+      workoutId: workoutId,
+      exerciseSet: ExerciseSetView(
+        id: 0,
+        name: 'OHP',
+        reps: 5,
+        weight: 100,
+        unit: 'kg',
+        created: startedAt,
+        bodyWeight: 0,
+        duration: 0,
+        distance: 0,
+        cardio: false,
+      ),
+    );
+
     await tester.pumpWidget(historyApp(await settings()));
     await tester.pumpAndSettle();
-
-    await tester.longPress(find.text('5 x 100 kg'));
+    await tester.tap(find.byType(ExpansionTile).first);
     await tester.pumpAndSettle();
+    await tester.tap(find.text('OHP'));
+    await tester.pumpAndSettle();
+    expect(find.text('Set 1'), findsOneWidget);
 
-    // Tap to deselect -- AnimatedSwitcher plays in reverse (150ms = ~10 frames)
-    // Measured baseline: 40 frames.
-    await tester.tap(find.text('5 x 100 kg'));
-    final frames = await countFramesToSettle(tester);
-
-    print(
-      '[perf] Exit selection mode: $frames frames (~10 AnimatedSwitcher in reverse)',
-    );
-    expect(
-      frames,
-      lessThan(45),
-      reason: 'Exiting selection mode took $frames frames',
-    );
+    await tester.tap(find.text('OHP'));
+    await tester.pumpAndSettle();
+    expect(find.text('Set 1'), findsNothing);
   });
+
 }

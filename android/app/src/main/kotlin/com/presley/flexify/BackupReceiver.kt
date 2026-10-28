@@ -32,6 +32,8 @@ class BackupReceiver : BroadcastReceiver() {
         Log.d("BackupReceiver", "onReceive")
         if (context == null) return
 
+        var backupFile: DocumentFile? = null
+        var backupCompleted = false
         try {
             val (enabled, backupPath) = getSettings(context)
             if (!enabled) return
@@ -56,11 +58,15 @@ class BackupReceiver : BroadcastReceiver() {
             channel.description = getBackupLocalization(context, "backupChannelDescription")
             notificationManager.createNotificationChannel(channel)
 
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) != PackageManager.PERMISSION_GRANTED
-            ) return
+            // Backups must still run when notifications are disabled. On Android 13+
+            // the notification permission is optional; returning here silently skipped
+            // every scheduled backup for users who denied it.
+            val canPostNotifications =
+                Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                    ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
 
             val dir = DocumentFile.fromTreeUri(context, backupUri)
             if (dir == null) {
@@ -78,6 +84,7 @@ class BackupReceiver : BroadcastReceiver() {
                 failBackup(context, getBackupLocalization(context, "backupFailureCreateFile"))
                 return
             }
+            backupFile = file
 
             notificationBuilder = notificationBuilder.setContentText(file.name)
 
@@ -138,21 +145,49 @@ class BackupReceiver : BroadcastReceiver() {
                         }
                     }
                 }
+                // Keep the archive only after the ZIP stream closed successfully.
+                backupCompleted = true
                 notificationBuilder = notificationBuilder.setContentTitle(
                     getBackupLocalization(context, "backupCompletedTitle")
                 )
-                notificationManager.notify(2, notificationBuilder.build())
+                if (canPostNotifications) {
+                    notificationManager.notify(2, notificationBuilder.build())
+                } else {
+                    Log.i(
+                        "BackupReceiver",
+                        "Backup completed without a notification because notification permission is denied"
+                    )
+                }
             } finally {
                 temporaryDatabase.delete()
             }
         } catch (error: Exception) {
             Log.e("BackupReceiver", "Error during backup: ${error.message}", error)
             failBackup(context, getBackupLocalization(context, "backupFailureUnknown"))
+        } finally {
+            if (!backupCompleted) {
+                try {
+                    backupFile?.delete()
+                } catch (cleanupError: Exception) {
+                    Log.w("BackupReceiver", "Could not remove incomplete backup file", cleanupError)
+                }
+            }
+
+            // Re-arm the next daily run even when this attempt failed or
+            // returned early. scheduleBackups checks the user's current setting.
+            try {
+                scheduleBackups(context)
+            } catch (scheduleError: Exception) {
+                Log.e("BackupReceiver", "Could not schedule the next automatic backup", scheduleError)
+            }
         }
     }
 
     private fun failBackup(context: Context, message: String) {
-        setAutomaticBackups(context, false)
+        // Keep automatic backups enabled after a failed attempt. A temporary
+        // SAF/provider/database issue must not permanently stop future backups;
+        // the repeating alarm can retry on the next scheduled day.
+        Log.w("BackupReceiver", "Automatic backup failed: $message")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 

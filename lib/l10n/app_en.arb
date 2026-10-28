@@ -2053,5 +2053,61 @@
         "type": "int"
       }
     }
+  },
+  "workoutStart": "Start workout",
+  "workoutFinish": "Finish workout",
+  "workoutFinishConfirm": "Finish workout?",
+  "workoutFinishDescription": "Your workout duration and sets will be saved.",
+  "workoutStartFirst": "Start your workout before saving sets.",
+  "workoutStartFailed": "Could not start workout.",
+  "workoutFinishFailed": "Could not finish workout.",
+  "workoutDuration": "Workout duration",
+  "@workoutStart": {
+    "description": "Workout session start text."
+  },
+  "@workoutFinish": {
+    "description": "Workout session finish text."
+  },
+  "@workoutFinishConfirm": {
+    "description": "Workout session finish confirm text."
+  },
+  "@workoutFinishDescription": {
+    "description": "Workout session finish description text."
+  },
+  "@workoutStartFirst": {
+    "description": "Workout session start first text."
+  },
+  "@workoutStartFailed": {
+    "description": "Workout session start failed text."
+  },
+  "@workoutFinishFailed": {
+    "description": "Workout session finish failed text."
+  },
+  "@workoutDuration": {
+    "description": "Workout session duration text."
+  },
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  },
+  "nextSetRecommendation": "Next-set recommendation",
+  "@nextSetRecommendation": {
+    "description": "Recommendation for the next workout set."
+  },
+  "tenRmNotEnoughData": "Not enough training data to estimate a 10RM yet.",
+  "targetReps": "Target repetitions",
+  "currentSetTenRm": "10RM from this set",
+  "@targetReps": {
+    "description": "Fixed target number of repetitions for an exercise."
+  },
+  "@currentSetTenRm": {
+    "description": "Live 10RM estimate calculated from the currently entered weight and repetitions."
+  },
+  "@tenRmNotEnoughData": {
+    "description": "Message shown when there is insufficient training history for a 10RM estimate."
   }
 }

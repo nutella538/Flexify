@@ -1,0 +1,10 @@
+• Wyśrodkowanie tekstu w podpowiedziach wykresów Flexify
+• Zakończenie migracji przechowywania masy ciała
+• Usunięcie hooków Codex
+• Usunięcie zbędnego pliku
+• Poprawienie danych testowych treningu dla zrzutów ekranu Flexify
+• Naprawienie dużego odstępu nad historią wykresów
+• Poprawienie odstępów filtrów wykresów
+• Poprawienie typu ograniczenia krawędzi podpowiedzi
+• Ustawienie domyślnej liczby punktów na 30
+• Przeniesienie kompilacji Androida na wbudowany Kotlin

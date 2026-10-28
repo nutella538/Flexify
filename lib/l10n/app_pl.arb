@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "Brak wyników dla „{query}”. Możesz utworzyć to jako nowy plan.",
   "createPlan": "Utwórz plan",
   "createNamedPlan": "Utwórz „{name}”",
-  "setNumber": "Seria {number}"
+  "setNumber": "Seria {number}",
+  "workoutStart": "Rozpocznij trening",
+  "workoutFinish": "Zakończ trening",
+  "workoutFinishConfirm": "Zakończyć trening?",
+  "workoutFinishDescription": "Czas treningu i serie zostaną zapisane.",
+  "workoutStartFirst": "Rozpocznij trening przed zapisaniem serii.",
+  "workoutStartFailed": "Nie udało się rozpocząć treningu.",
+  "workoutFinishFailed": "Nie udało się zakończyć treningu.",
+  "workoutDuration": "Czas treningu",
+  "nextSetRecommendation": "Zalecenie dotyczące następnej serii",
+  "tenRmNotEnoughData": "Za mało danych treningowych, aby oszacować 10RM.",
+  "targetReps": "Docelowa liczba powtórzeń",
+  "currentSetTenRm": "10RM z tej serii",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

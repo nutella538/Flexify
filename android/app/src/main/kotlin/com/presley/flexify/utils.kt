@@ -12,6 +12,7 @@ import java.util.Calendar
 private const val BACKUP_LOCALIZATION_PREFERENCES = "backup_localizations"
 
 fun setBackupLocalizations(context: Context, values: Map<String, String>) {
+    Log.i("FlexifyBackup", "Saving backup localization strings: ${values.size} keys; completedTitlePresent=${values["backupCompletedTitle"].orEmpty().isNotEmpty()}")
     context.getSharedPreferences(BACKUP_LOCALIZATION_PREFERENCES, Context.MODE_PRIVATE)
         .edit()
         .apply {
@@ -31,28 +32,47 @@ fun hasBackupLocalizations(context: Context): Boolean {
 }
 
 fun scheduleBackups(context: Context) {
-    if (!hasBackupLocalizations(context)) return
+    Log.i("FlexifyBackup", "scheduleBackups() called")
+    if (!hasBackupLocalizations(context)) {
+        Log.w("FlexifyBackup", "Not scheduling: backup localization strings are missing")
+        return
+    }
+
+    // Never schedule another run if the user has disabled automatic backups
+    // or has removed the destination folder.
+    val (automaticBackups, backupPath) = getSettings(context)
+    Log.i("FlexifyBackup", "Settings read: automaticBackups=$automaticBackups, backupPathPresent=${!backupPath.isNullOrBlank()}")
+    if (!automaticBackups || backupPath.isNullOrBlank()) {
+        Log.w("FlexifyBackup", "Not scheduling: automatic backups disabled or destination path missing")
+        return
+    }
+
     val backupIntent =
         Intent(context, BackupReceiver::class.java).apply { setPackage(context.packageName) }
     val pendingIntent = PendingIntent.getBroadcast(
         context,
         0,
         backupIntent,
-        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
-    val calendar = Calendar.getInstance().apply {
+    val now = System.currentTimeMillis()
+    val nextRun = Calendar.getInstance().apply {
         set(Calendar.HOUR_OF_DAY, 2)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
-        if (timeInMillis < System.currentTimeMillis()) add(Calendar.DAY_OF_YEAR, 1)
+        set(Calendar.MILLISECOND, 0)
+        if (timeInMillis <= now) add(Calendar.DAY_OF_YEAR, 1)
     }
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    alarmManager.setInexactRepeating(
+    // A one-shot alarm is re-armed after every receiver attempt. This makes
+    // the next run explicit instead of relying on a repeating alarm surviving
+    // device idle and receiver failures.
+    alarmManager.setAndAllowWhileIdle(
         AlarmManager.RTC_WAKEUP,
-        calendar.timeInMillis,
-        AlarmManager.INTERVAL_DAY,
+        nextRun.timeInMillis,
         pendingIntent
     )
+    Log.i("FlexifyBackup", "Backup alarm scheduled for ${nextRun.time}")
 }
 
 fun getDatabaseFile(context: Context): File {
@@ -65,7 +85,10 @@ fun getDatabaseFile(context: Context): File {
 
 fun openDb(context: Context): SQLiteDatabase? {
     val dbFile = getDatabaseFile(context)
-    if (!dbFile.exists()) return null
+    if (!dbFile.exists()) {
+        Log.w("utils@openDb", "Database file does not exist: ${dbFile.absolutePath}")
+        return null
+    }
     return try {
         SQLiteDatabase.openDatabase(dbFile.absolutePath, null, 0)
     } catch (error: Exception) {
@@ -75,10 +98,16 @@ fun openDb(context: Context): SQLiteDatabase? {
 }
 
 fun getSettings(context: Context): Pair<Boolean, String?> {
-    val db = openDb(context) ?: return Pair(false, null)
+    val db = openDb(context) ?: run {
+        Log.w("utils@getSettings", "Could not open database; treating automatic backups as disabled")
+        return Pair(false, null)
+    }
     return try {
         db.rawQuery("SELECT backup_path, automatic_backups FROM settings", null).use { cursor ->
-            if (!cursor.moveToFirst()) return Pair(false, null)
+            if (!cursor.moveToFirst()) {
+                Log.w("utils@getSettings", "Settings table returned no rows")
+                return Pair(false, null)
+            }
             val backupPath = cursor.getString(cursor.getColumnIndexOrThrow("backup_path"))
             val automaticBackups =
                 cursor.getInt(cursor.getColumnIndexOrThrow("automatic_backups")) == 1

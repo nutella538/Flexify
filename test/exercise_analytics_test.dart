@@ -95,7 +95,7 @@ void main() {
     expect(bestWeight.single.value, closeTo(100, 0.0001));
     expect(bestReps.single.value, 10);
     expect(volume.single.value, closeTo(1500, 0.01));
-    expect(oneRepMax.single.value, closeTo(133.37, 0.02));
+    expect(oneRepMax.single.value, closeTo(100, 0.02));
     expect(relative.single.value, closeTo(1.25, 0.0001));
     expect(
       await getStrengthData(

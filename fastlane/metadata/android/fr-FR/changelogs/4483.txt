@@ -1,0 +1,10 @@
+• Centrer le texte dans les info-bulles des graphiques Flexify
+• Terminer la migration du stockage du poids corporel
+• Supprimer les hooks Codex
+• Supprimer le fichier inutile
+• Corriger les données de test des entraînements pour les captures Flexify
+• Corriger le grand espace au-dessus de l’historique des graphiques
+• Corriger certains espacements des filtres de graphiques
+• Corriger le type de limitation du bord des info-bulles
+• Définir 30 points par défaut
+• Migrer la compilation Android vers Kotlin intégré

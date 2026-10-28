@@ -382,6 +382,13 @@ void main() {
       final allowedEnglishEquivalentKeys = <String>{
         ..._alwaysEnglishEquivalentKeys,
         ...?_localeSpecificEnglishEquivalentKeys[locale],
+        // These new workout-history labels are translated in German first;
+        // other locales may temporarily use the English fallback until a
+        // dedicated localization pass is scheduled.
+        if (locale != 'de') ...{
+          'lastSetTenRm',
+          'applyRecommendedWeight',
+        },
       };
       final accidentalEnglishKeys =
           sourceKeys

@@ -2053,5 +2053,25 @@
         "type": "int"
       }
     }
+  },
+  "workoutStart": "Почати тренування",
+  "workoutFinish": "Завершити тренування",
+  "workoutFinishConfirm": "Завершити тренування?",
+  "workoutFinishDescription": "Тривалість тренування та підходи буде збережено.",
+  "workoutStartFirst": "Почніть тренування, перш ніж зберігати підходи.",
+  "workoutStartFailed": "Не вдалося почати тренування.",
+  "workoutFinishFailed": "Не вдалося завершити тренування.",
+  "workoutDuration": "Тривалість тренування",
+  "nextSetRecommendation": "Рекомендація для наступного підходу",
+  "tenRmNotEnoughData": "Поки недостатньо тренувальних даних для оцінки 10ПМ.",
+  "targetReps": "Цільова кількість повторень",
+  "currentSetTenRm": "10RM із цього підходу",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
   }
 }

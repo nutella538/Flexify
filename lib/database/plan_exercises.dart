@@ -18,4 +18,5 @@ class PlanExercises extends Table {
   IntColumn get planId => integer().references(Plans, #id)();
   IntColumn get warmupSets => integer().nullable()();
   IntColumn get sequence => integer().withDefault(const Constant(0))();
+  IntColumn get targetReps => integer().withDefault(const Constant(15))();
 }

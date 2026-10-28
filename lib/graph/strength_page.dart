@@ -170,7 +170,7 @@ class _StrengthPageState extends State<StrengthPage> {
     final metricOptions = <(StrengthMetric, String)>[
       (StrengthMetric.bestWeight, context.l10n.bestWeight),
       (StrengthMetric.bestReps, context.l10n.bestReps),
-      (StrengthMetric.oneRepMax, context.l10n.oneRepMax),
+      (StrengthMetric.oneRepMax, '10RM'),
       (StrengthMetric.volume, context.l10n.volume),
       if (showBodyWeight)
         (StrengthMetric.relativeStrength, context.l10n.relativeStrength),

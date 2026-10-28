@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "“{query}” ile eşleşen sonuç yok. Bunu yeni bir plan olarak oluşturabilirsin.",
   "createPlan": "Plan Oluştur",
   "createNamedPlan": "“{name}” Oluştur",
-  "setNumber": "{number}. Set"
+  "setNumber": "{number}. Set",
+  "workoutStart": "Antrenmanı başlat",
+  "workoutFinish": "Antrenmanı bitir",
+  "workoutFinishConfirm": "Antrenman bitirilsin mi?",
+  "workoutFinishDescription": "Antrenman süreniz ve setleriniz kaydedilecek.",
+  "workoutStartFirst": "Setleri kaydetmeden önce antrenmanı başlatın.",
+  "workoutStartFailed": "Antrenman başlatılamadı.",
+  "workoutFinishFailed": "Antrenman bitirilemedi.",
+  "workoutDuration": "Antrenman süresi",
+  "nextSetRecommendation": "Sonraki set için öneri",
+  "tenRmNotEnoughData": "10RM tahmini için henüz yeterli antrenman verisi yok.",
+  "targetReps": "Hedef tekrar",
+  "currentSetTenRm": "Bu setten 10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }
