@@ -2053,9 +2053,16 @@
   "workoutStartFailed": "ওয়ার্কআউট শুরু করা যায়নি।",
   "workoutFinishFailed": "ওয়ার্কআউট শেষ করা যায়নি।",
   "workoutDuration": "ওয়ার্কআউটের সময়কাল",
-  "estimatedTenRm": "আনুমানিক 10RM",
   "nextSetRecommendation": "পরবর্তী সেটের সুপারিশ",
   "tenRmNotEnoughData": "এখনও 10RM অনুমান করার মতো পর্যাপ্ত প্রশিক্ষণ-তথ্য নেই।",
   "targetReps": "লক্ষ্য পুনরাবৃত্তি",
-  "currentSetTenRm": "এই সেট থেকে 10RM"
+  "currentSetTenRm": "এই সেট থেকে 10RM",
+  "lastSetTenRm": "সর্বশেষ সেটের 10RM",
+  "@lastSetTenRm": {
+    "description": "সর্বশেষ ওয়ার্কআউটের প্রথম সেট থেকে গণনা করা দশ-রিপিটিশন সর্বোচ্চ ওজনের অনুমান।"
+  },
+  "applyRecommendedWeight": "প্রস্তাবিত ওজন ব্যবহার করুন",
+  "@applyRecommendedWeight": {
+    "description": "প্রস্তাবিত ওজনটি ওজনের ইনপুট ক্ষেত্রে কপি করে।"
+  }
 }
