@@ -316,6 +316,18 @@ class _StartPlanPageState extends State<StartPlanPage>
     AsyncSnapshot<List<PlanExerciseEntry>> snapshot,
     List<GymCount> counts,
   ) {
+    final selectedExerciseId =
+        snapshot.data != null &&
+            _selected >= 0 &&
+            _selected < snapshot.data!.length
+        ? snapshot.data![_selected].exercise.id
+        : null;
+    final hasRecordedSet = selectedExerciseId != null &&
+        counts.any(
+          (count) =>
+              count.exerciseId == selectedExerciseId && count.count > 0,
+        );
+
     return [
       StepperField(
         controller: _reps,
@@ -335,11 +347,11 @@ class _StartPlanPageState extends State<StartPlanPage>
       const SizedBox(height: 8.0),
       _weightField(snapshot, counts),
       const SizedBox(height: 8.0),
-      _tenRmFeedback(),
+      _tenRmFeedback(showRecommendation: !hasRecordedSet),
     ];
   }
 
-  Widget _tenRmFeedback() {
+  Widget _tenRmFeedback({required bool showRecommendation}) {
     final weight = parseDisplayNumber(context, _weight.text);
     final reps = parseDisplayNumber(context, _reps.text);
     final currentSetTenRm = weight != null &&
@@ -396,7 +408,7 @@ class _StartPlanPageState extends State<StartPlanPage>
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
-          if (recommendation != null) ...[
+          if (showRecommendation && recommendation != null) ...[
             const SizedBox(height: 8),
             Text(
               '${context.l10n.nextSetRecommendation}: '
