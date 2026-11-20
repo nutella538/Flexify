@@ -179,6 +179,7 @@ Future<List<PlanExerciseDraft>> loadPlanExerciseDrafts(
       enabled: Value(row.read(db.planExercises.enabled) ?? false),
       maxSets: Value(row.read(db.planExercises.maxSets)),
       warmupSets: Value(row.read(db.planExercises.warmupSets)),
+      targetReps: Value(row.read(db.planExercises.targetReps) ?? 15),
       timers: Value(row.read(db.planExercises.timers) ?? true),
       sequence: Value(row.read(db.planExercises.sequence) ?? 0),
     );

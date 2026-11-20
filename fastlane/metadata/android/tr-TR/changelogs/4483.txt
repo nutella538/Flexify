@@ -1,0 +1,10 @@
+• Flexify grafik araç ipuçlarındaki metni ortala
+• Vücut ağırlığı depolama geçişini tamamla
+• Codex kancalarını kaldır
+• Gereksiz dosyayı sil
+• Flexify ekran görüntüsü antrenman test verilerini düzelt
+• Grafik geçmişinin üstündeki büyük boşluğu düzelt
+• Grafik filtrelerindeki bazı boşlukları düzelt
+• Araç ipucu kenar sınırı türünü düzelt
+• Varsayılan nokta sayısını 30 yap
+• Android derlemesini yerleşik Kotlin'e taşı

@@ -2044,5 +2044,25 @@
         "type": "int"
       }
     }
+  },
+  "workoutStart": "वर्कआउट शुरू करें",
+  "workoutFinish": "वर्कआउट समाप्त करें",
+  "workoutFinishConfirm": "वर्कआउट समाप्त करें?",
+  "workoutFinishDescription": "आपके वर्कआउट की अवधि और सेट सहेजे जाएंगे।",
+  "workoutStartFirst": "सेट सहेजने से पहले वर्कआउट शुरू करें।",
+  "workoutStartFailed": "वर्कआउट शुरू नहीं हो सका।",
+  "workoutFinishFailed": "वर्कआउट समाप्त नहीं हो सका।",
+  "workoutDuration": "वर्कआउट की अवधि",
+  "nextSetRecommendation": "अगले सेट के लिए सुझाव",
+  "tenRmNotEnoughData": "अभी 10RM का अनुमान लगाने के लिए पर्याप्त प्रशिक्षण डेटा नहीं है।",
+  "targetReps": "लक्षित रेप्स",
+  "currentSetTenRm": "इस सेट से 10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
   }
 }

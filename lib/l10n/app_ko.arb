@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "“{query}”와 일치하는 항목이 없습니다. 새 플랜으로 만들 수 있습니다.",
   "createPlan": "플랜 만들기",
   "createNamedPlan": "“{name}” 만들기",
-  "setNumber": "세트 {number}"
+  "setNumber": "세트 {number}",
+  "workoutStart": "운동 시작",
+  "workoutFinish": "운동 종료",
+  "workoutFinishConfirm": "운동을 종료할까요?",
+  "workoutFinishDescription": "운동 시간과 세트가 저장됩니다.",
+  "workoutStartFirst": "세트를 저장하기 전에 운동을 시작하세요.",
+  "workoutStartFailed": "운동을 시작하지 못했습니다.",
+  "workoutFinishFailed": "운동을 종료하지 못했습니다.",
+  "workoutDuration": "운동 시간",
+  "nextSetRecommendation": "다음 세트 권장",
+  "tenRmNotEnoughData": "10RM을 추정하기 위한 운동 데이터가 아직 부족합니다.",
+  "targetReps": "목표 반복 횟수",
+  "currentSetTenRm": "이 세트의 10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

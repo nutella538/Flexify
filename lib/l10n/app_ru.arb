@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "Ничто не совпадает с «{query}». Вы можете создать его как новый план.",
   "createPlan": "Создать план",
   "createNamedPlan": "Создать «{name}»",
-  "setNumber": "Подход {number}"
+  "setNumber": "Подход {number}",
+  "workoutStart": "Начать тренировку",
+  "workoutFinish": "Завершить тренировку",
+  "workoutFinishConfirm": "Завершить тренировку?",
+  "workoutFinishDescription": "Длительность тренировки и подходы будут сохранены.",
+  "workoutStartFirst": "Начните тренировку перед сохранением подходов.",
+  "workoutStartFailed": "Не удалось начать тренировку.",
+  "workoutFinishFailed": "Не удалось завершить тренировку.",
+  "workoutDuration": "Длительность тренировки",
+  "nextSetRecommendation": "Рекомендация для следующего подхода",
+  "tenRmNotEnoughData": "Пока недостаточно данных тренировок для оценки 10ПМ.",
+  "targetReps": "Целевое количество повторений",
+  "currentSetTenRm": "10RM по этому подходу",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

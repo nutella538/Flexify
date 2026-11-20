@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "Niets komt overeen met “{query}”. Je kunt dit als nieuw schema aanmaken.",
   "createPlan": "Schema aanmaken",
   "createNamedPlan": "“{name}” aanmaken",
-  "setNumber": "Set {number}"
+  "setNumber": "Set {number}",
+  "workoutStart": "Training starten",
+  "workoutFinish": "Training beëindigen",
+  "workoutFinishConfirm": "Training beëindigen?",
+  "workoutFinishDescription": "De trainingsduur en je sets worden opgeslagen.",
+  "workoutStartFirst": "Start je training voordat je sets opslaat.",
+  "workoutStartFailed": "Training starten is mislukt.",
+  "workoutFinishFailed": "Training beëindigen is mislukt.",
+  "workoutDuration": "Trainingsduur",
+  "nextSetRecommendation": "Aanbeveling voor de volgende set",
+  "tenRmNotEnoughData": "Nog niet genoeg trainingsgegevens om een 10RM te schatten.",
+  "targetReps": "Doelherhalingen",
+  "currentSetTenRm": "10RM uit deze set",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

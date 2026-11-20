@@ -157,6 +157,10 @@ void main() {
       for (final setting in before['settings']!)
         {...setting, 'default_graph_limit': 30},
     ],
+    'plan_exercises': [
+      for (final exercise in before['plan_exercises']!)
+        {...exercise, 'target_reps': 15},
+    ],
   };
 
   Future<void> expectHealthy(AppDatabase database) async {
@@ -288,8 +292,9 @@ Future<void> main(List<String> args) async {
 
       final database = openPersistent();
       final actual = await snapshot(database);
+      final upgradedExpected = afterGraphLimitUpgrade(expected);
       for (final table in expected.keys.where((name) => name != 'settings')) {
-        expect(actual[table], expected[table], reason: table);
+        expect(actual[table], upgradedExpected[table], reason: table);
       }
       final settings = await database.settings.select().getSingle();
       expect(settings.localeOverride, 'en');

@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "没有与“{query}”匹配的内容。你可以将其创建为新计划。",
   "createPlan": "创建计划",
   "createNamedPlan": "创建“{name}”",
-  "setNumber": "第 {number} 组"
+  "setNumber": "第 {number} 组",
+  "workoutStart": "开始训练",
+  "workoutFinish": "结束训练",
+  "workoutFinishConfirm": "结束训练？",
+  "workoutFinishDescription": "训练时长和训练组将被保存。",
+  "workoutStartFirst": "保存训练组前请先开始训练。",
+  "workoutStartFailed": "无法开始训练。",
+  "workoutFinishFailed": "无法结束训练。",
+  "workoutDuration": "训练时长",
+  "nextSetRecommendation": "下一组建议",
+  "tenRmNotEnoughData": "训练数据不足，暂时无法估算10RM。",
+  "targetReps": "目标重复次数",
+  "currentSetTenRm": "本组的10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

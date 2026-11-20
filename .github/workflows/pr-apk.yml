@@ -1,4 +1,4 @@
-name: PR APK
+name: F-Droid unsigned APK
 
 on:
   pull_request:
@@ -16,6 +16,9 @@ concurrency:
 
 env:
   PUB_SUMMARY_ONLY: true
+  # Match F-Droid's build environment so Gradle intentionally leaves release APK unsigned.
+  fdroidserver: '1'
+  home_vagrant: /home/vagrant
   PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr }}
 
 permissions:
@@ -41,7 +44,7 @@ jobs:
               pull_number: prNumber,
             });
             if (pr.head.repo.full_name !== `${context.repo.owner}/${context.repo.repo}`) {
-              core.setFailed('PR APKs can only be built from branches in this repository because every APK uses the Flexify release signing key.');
+              core.setFailed('Manual builds are limited to branches in this repository.');
             }
 
       # Submodules are deliberately not fetched here: actions/checkout clones
@@ -82,28 +85,11 @@ jobs:
             -e 's/^org.gradle.workers.max=.*/org.gradle.workers.max=2/' \
             android/gradle.properties
 
-      - name: Decode Android keystore
-        env:
-          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        run: printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > android/app/keystore.jks
-
-      - name: Configure Android signing
-        env:
-          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        run: |
-          echo "storePassword=$ANDROID_STORE_PASSWORD" > android/key.properties
-          echo "keyPassword=$ANDROID_KEY_PASSWORD" >> android/key.properties
-          echo "keyAlias=$ANDROID_KEY_ALIAS" >> android/key.properties
-          echo "storeFile=keystore.jks" >> android/key.properties
-
       - name: Build APK
         run: |
           flutter build apk --release
           mv build/app/outputs/flutter-apk/app-release.apk \
             "flexify-pr-${PR_NUMBER}.apk"
-          ./scripts/verify-android-release-signing.sh "flexify-pr-${PR_NUMBER}.apk"
 
       - name: Upload APK artifact
         id: upload
@@ -118,11 +104,11 @@ jobs:
           ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
         run: |
           {
-            echo "### 📱 PR APK built"
+            echo "### 📦 F-Droid unsigned APK built"
             echo ""
             echo "[Download the APK]($ARTIFACT_URL) (zipped, expires in 14 days)."
             echo ""
-            echo "This is the normal **Flexify** app (\`com.presley.flexify\`) signed with the release key, so it updates the existing Flexify installation in place."
+            echo "This is an **unsigned release APK** built without release-key secrets, matching F-Droid's source-build approach. It is not directly installable until signed."
           } >> "$GITHUB_STEP_SUMMARY"
 
       # The GITHUB_TOKEN on fork PRs is read-only, so commenting only works
@@ -144,11 +130,11 @@ jobs:
             });
             const body = [
               marker,
-              '### 📱 PR APK built',
+              '### 📦 F-Droid unsigned APK built',
               '',
-              `[Download the APK](${process.env.ARTIFACT_URL}) (zipped, expires in 14 days) to test this change.`,
+              `[Download the APK](${process.env.ARTIFACT_URL}) (zipped, expires in 14 days) for build verification. This APK is unsigned and is not directly installable.`,
               '',
-              `Built from ${pr.head.sha}. This is the normal **Flexify** app (\`com.presley.flexify\`) signed with the release key, so it updates the existing Flexify installation in place.`,
+              `Built from ${pr.head.sha}. This is an **unsigned release APK** built without GitHub signing secrets, matching F-Droid's source-build approach.`,
             ].join('\n');
 
             const { data: comments } = await github.rest.issues.listComments({

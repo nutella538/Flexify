@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:drift/drift.dart' hide Column;
+
+
 import 'package:flexify/app_search.dart';
 import 'package:flexify/bottom_nav.dart';
 import 'package:flexify/constants.dart';
@@ -186,6 +189,39 @@ class _GroupHistoryState extends State<GroupHistory> {
                   context,
                 ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
+            ),
+            StreamBuilder<List<Workout>>(
+              stream: (db.select(db.workouts)
+                    ..where(
+                      (workout) =>
+                          workout.startedAt.isBiggerOrEqual(
+                            Variable<DateTime>(DateTime(group.day.year, group.day.month, group.day.day)),
+                          ) &
+                          workout.startedAt.isSmallerThan(
+                            Variable<DateTime>(DateTime(group.day.year, group.day.month, group.day.day + 1)),
+                          ) &
+                          workout.endedAt.isNotNull(),
+                    ))
+                  .watch(),
+              builder: (context, snapshot) {
+                final workouts = snapshot.data;
+                if (workouts == null || workouts.isEmpty) {
+                  return const SizedBox.shrink();
+                }
+                final duration = workouts.fold<Duration>(
+                  Duration.zero,
+                  (total, workout) =>
+                      total + workout.endedAt!.difference(workout.startedAt),
+                );
+                if (duration.inSeconds <= 0) return const SizedBox.shrink();
+                final hours = duration.inHours;
+                final minutes = duration.inMinutes.remainder(60);
+                return Text(
+                  '${context.l10n.workoutDuration}: '
+                  '${hours > 0 ? "${hours}h " : ""}${minutes}m',
+                  style: Theme.of(context).textTheme.bodySmall,
+                );
+              },
             ),
           ],
         ),

@@ -494,5 +494,25 @@
   "nothingMatchesPlanSearch": "「{query}」に一致する項目はありません。新しいプランとして作成できます。",
   "createPlan": "プランを作成",
   "createNamedPlan": "「{name}」を作成",
-  "setNumber": "セット {number}"
+  "setNumber": "セット {number}",
+  "workoutStart": "ワークアウトを開始",
+  "workoutFinish": "ワークアウトを終了",
+  "workoutFinishConfirm": "ワークアウトを終了しますか？",
+  "workoutFinishDescription": "ワークアウトの時間とセットが保存されます。",
+  "workoutStartFirst": "セットを保存する前にワークアウトを開始してください。",
+  "workoutStartFailed": "ワークアウトを開始できませんでした。",
+  "workoutFinishFailed": "ワークアウトを終了できませんでした。",
+  "workoutDuration": "ワークアウト時間",
+  "nextSetRecommendation": "次のセットの推奨",
+  "tenRmNotEnoughData": "10RMを推定するためのトレーニングデータがまだ不足しています。",
+  "targetReps": "目標回数",
+  "currentSetTenRm": "このセットからの10RM",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
+  }
 }

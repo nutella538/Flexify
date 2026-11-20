@@ -44,7 +44,7 @@ void main() {
     await tester.tap(find.textContaining('Barbell bench press'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Save'), findsOne);
+    expect(find.byTooltip('Start workout'), findsOneWidget);
   });
 
   testWidgets('PlansPage settings', (WidgetTester tester) async {

@@ -117,7 +117,7 @@ void main() {
     await pumpStrengthPage(tester, harness);
 
     var currentMetric = 'Best weight';
-    for (final metric in ['Best reps', 'One rep max', 'Volume']) {
+    for (final metric in ['Best reps', '10RM', 'Volume']) {
       await tester.tap(find.text(currentMetric));
       await tester.pumpAndSettle();
       await tester.tap(find.text(metric));

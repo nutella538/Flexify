@@ -2044,5 +2044,25 @@
         "type": "int"
       }
     }
+  },
+  "workoutStart": "เริ่มออกกำลังกาย",
+  "workoutFinish": "จบการออกกำลังกาย",
+  "workoutFinishConfirm": "ต้องการจบการออกกำลังกายหรือไม่",
+  "workoutFinishDescription": "ระบบจะบันทึกระยะเวลาและเซ็ตของการออกกำลังกาย",
+  "workoutStartFirst": "เริ่มออกกำลังกายก่อนบันทึกเซ็ต",
+  "workoutStartFailed": "ไม่สามารถเริ่มออกกำลังกายได้",
+  "workoutFinishFailed": "ไม่สามารถจบการออกกำลังกายได้",
+  "workoutDuration": "ระยะเวลาการออกกำลังกาย",
+  "nextSetRecommendation": "คำแนะนำสำหรับเซ็ตถัดไป",
+  "tenRmNotEnoughData": "ยังมีข้อมูลการฝึกไม่เพียงพอสำหรับประมาณค่า 10RM",
+  "targetReps": "จำนวนครั้งเป้าหมาย",
+  "currentSetTenRm": "10RM จากเซ็ตนี้",
+  "lastSetTenRm": "10RM from last set",
+  "@lastSetTenRm": {
+    "description": "Estimated ten-repetition maximum calculated from the first set of the most recent workout."
+  },
+  "applyRecommendedWeight": "Use recommended weight",
+  "@applyRecommendedWeight": {
+    "description": "Button that copies the recommended weight into the weight input."
   }
 }

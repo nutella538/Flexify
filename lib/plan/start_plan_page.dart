@@ -12,12 +12,12 @@ import 'package:flexify/empty_state.dart';
 import 'package:flexify/database/exercise_analytics.dart';
 import 'package:flexify/database/exercise_set_repository.dart';
 import 'package:flexify/l10n/l10n.dart';
-import 'package:flexify/logging.dart';
 import 'package:flexify/main.dart';
 import 'package:flexify/permissions_page.dart';
 import 'package:flexify/plan/edit_plan_page.dart';
 import 'package:flexify/plan/plan_queries.dart';
 import 'package:flexify/plan/session_sets.dart';
+import 'package:flexify/plan/ten_rep_max.dart';
 import 'package:flexify/plan/start_list.dart';
 import 'package:flexify/plan/workout_sessions.dart';
 import 'package:flexify/responsive.dart';
@@ -61,9 +61,16 @@ class _StartPlanPageState extends State<StartPlanPage>
   bool _cardio = false;
   DateTime? _lastSaved;
   bool _saving = false;
+  bool _startingWorkout = false;
+  Timer? _elapsedTicker;
   List<Rpm>? _rpms;
   String? _category;
   String? _image;
+  String? _selectedExerciseName;
+  double? _lastSetTenRm;
+  double? _recommendedNextWeight;
+  int _targetReps = 15;
+  int _tenRmRequestId = 0;
 
   Stream<List<PlanExerciseEntry>>? _stream;
   Stream<List<GymCount>>? _gymCountsStream;
@@ -142,6 +149,20 @@ class _StartPlanPageState extends State<StartPlanPage>
                   onPressed: () => Navigator.pop(context),
                 ),
                 actions: [
+                  if (_workout == null)
+                    IconButton(
+                      tooltip: context.l10n.workoutStart,
+                      onPressed: _startingWorkout ? null : _startWorkout,
+                      icon: const Icon(Icons.play_arrow),
+                    )
+                  else ...[
+                    Text(_formatElapsed(DateTime.now().difference(_workout!.startedAt))),
+                    IconButton(
+                      tooltip: context.l10n.workoutFinish,
+                      onPressed: _confirmFinishWorkout,
+                      icon: const Icon(Icons.stop_circle_outlined),
+                    ),
+                  ],
                   IconButton(
                     tooltip: context.l10n.editPlan,
                     onPressed: editPlan,
@@ -295,6 +316,18 @@ class _StartPlanPageState extends State<StartPlanPage>
     AsyncSnapshot<List<PlanExerciseEntry>> snapshot,
     List<GymCount> counts,
   ) {
+    final selectedExerciseId =
+        snapshot.data != null &&
+            _selected >= 0 &&
+            _selected < snapshot.data!.length
+        ? snapshot.data![_selected].exercise.id
+        : null;
+    final hasRecordedSet = selectedExerciseId != null &&
+        counts.any(
+          (count) =>
+              count.exerciseId == selectedExerciseId && count.count > 0,
+        );
+
     return [
       StepperField(
         controller: _reps,
@@ -303,6 +336,7 @@ class _StartPlanPageState extends State<StartPlanPage>
         step: 1,
         textInputAction: TextInputAction.next,
         onFieldSubmitted: (_) => _focusAndSelect(_weightFocus, _weight),
+        onChanged: (_) => setState(() {}),
         validator: (value) {
           if (value == null || value.isEmpty) return context.l10n.requiredField;
           if (parseDisplayNumber(context, value) == null)
@@ -312,7 +346,92 @@ class _StartPlanPageState extends State<StartPlanPage>
       ),
       const SizedBox(height: 8.0),
       _weightField(snapshot, counts),
+      const SizedBox(height: 8.0),
+      _tenRmFeedback(showRecommendation: !hasRecordedSet),
     ];
+  }
+
+  Widget _tenRmFeedback({required bool showRecommendation}) {
+    final weight = parseDisplayNumber(context, _weight.text);
+    final reps = parseDisplayNumber(context, _reps.text);
+    final currentSetTenRm = weight != null &&
+            reps != null &&
+            weight > 0 &&
+            reps > 0
+        ? weight * (30 + reps) / 40
+        : null;
+    final selectedName = _selectedExerciseName;
+    final recommendation = weight != null &&
+            reps != null &&
+            weight > 0 &&
+            reps > 0 &&
+            selectedName != null
+        ? recommendProgressiveNextSetWeight(
+            currentWeight: weight,
+            currentReps: reps,
+            step: weightStep(selectedName, _unit),
+            targetReps: _targetReps,
+          )
+        : _recommendedNextWeight;
+    final recommendationTenRm = recommendation != null && recommendation > 0
+        ? recommendation * (30 + _targetReps) / 40
+        : null;
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (currentSetTenRm != null)
+            Text(
+              '${context.l10n.currentSetTenRm}: '
+              '${formatDisplayNumber(context, currentSetTenRm)} $_unit',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          if (_lastSetTenRm != null) ...[
+            if (currentSetTenRm != null) const SizedBox(height: 4),
+            Text(
+              '${context.l10n.lastSetTenRm}: '
+              '${formatDisplayNumber(context, _lastSetTenRm!)} $_unit',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ] else
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                context.l10n.tenRmNotEnoughData,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
+          if (showRecommendation && recommendation != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              '${context.l10n.nextSetRecommendation}: '
+              '${formatDisplayNumber(context, recommendation)} $_unit × '
+              '$_targetReps ${context.l10n.repsLabel}'
+              '${recommendationTenRm == null ? '' : '  ·  10RM ≈ ${formatDisplayNumber(context, recommendationTenRm)} $_unit'}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                onPressed: () {
+                  _weight.text = formatDisplayNumber(context, recommendation);
+                  setState(() {});
+                },
+                icon: const Icon(Icons.arrow_upward_rounded),
+                label: Text(context.l10n.applyRecommendedWeight),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   List<Widget> cardioFields(
@@ -448,6 +567,7 @@ class _StartPlanPageState extends State<StartPlanPage>
       focusNode: _weightFocus,
       labelText: context.l10n.weightWithUnit(_unit),
       step: weightStep(exerciseName, _unit),
+      onChanged: (_) => setState(() {}),
       suffixIcon: Selector<Setting, bool>(
         selector: (context, settings) => settings.showBodyWeight,
         builder: (context, showBodyWeight, child) => Visibility(
@@ -498,6 +618,7 @@ class _StartPlanPageState extends State<StartPlanPage>
                 setState(() {
                   _unit = newValue!;
                 });
+                unawaited(_refreshSelectedTenRm());
               },
             ),
           ],
@@ -585,15 +706,7 @@ class _StartPlanPageState extends State<StartPlanPage>
 
   @override
   void dispose() {
-    final workout = _workout;
-    if (workout != null) {
-      unawaited(_finishWorkout(workout.id));
-    } else {
-      final pendingWorkout = _workoutFuture;
-      if (pendingWorkout != null) {
-        unawaited(pendingWorkout.then((workout) => _finishWorkout(workout.id)));
-      }
-    }
+    _elapsedTicker?.cancel();
 
     _reps.dispose();
     _weight.dispose();
@@ -617,16 +730,94 @@ class _StartPlanPageState extends State<StartPlanPage>
     super.dispose();
   }
 
-  Future<void> _finishWorkout(int workoutId) async {
-    try {
-      await finishWorkout(db, workoutId);
-    } catch (error, stackTrace) {
-      talker.error('Failed to finish workout session', error, stackTrace);
-    }
-  }
-
   Future<ExerciseSetView?> getLast(String exercise) {
     return getLatestExerciseSet(db, exerciseName: exercise);
+  }
+
+  Future<void> _refreshSelectedTenRm() async {
+    final exercises = await _stream?.first;
+    if (!mounted ||
+        exercises == null ||
+        exercises.isEmpty ||
+        _selected >= exercises.length) {
+      return;
+    }
+    await _refreshTenRm(exercises[_selected].exercise.name);
+  }
+
+  Future<void> _refreshTenRm(String exerciseName) async {
+    final requestId = ++_tenRmRequestId;
+    final history = await getExerciseSetsForExercise(
+      db,
+      exerciseName: exerciseName,
+      limit: 20,
+    );
+    if (!mounted || requestId != _tenRmRequestId) return;
+
+    final recentSets = <TenRmSet>[];
+    for (final set in history) {
+      if (set.cardio) continue;
+      final loadKg = canonicalExerciseSetLoad(set.unit, set.weight);
+      if (loadKg == null) continue;
+      recentSets.add(
+        TenRmSet(weight: displayLoad(_unit, loadKg), reps: set.reps),
+      );
+    }
+
+    final tenRm = estimateTenRm(recentSets);
+    final exercise = await getExerciseByName(exerciseName);
+    final planExercise = exercise == null
+        ? null
+        : await (db.planExercises.select()
+              ..where(
+                (row) =>
+                    row.planId.equals(widget.plan.id) &
+                    row.exerciseId.equals(exercise.id),
+              )
+              ..limit(1))
+            .getSingleOrNull();
+    final targetReps = planExercise?.targetReps ?? 15;
+
+    // Match the recommendation to the same baseline used to prefill the first
+    // set: the first set from the latest workout containing this exercise.
+    // This avoids basing the next workout's first set on a later, often lighter
+    // set from the previous workout.
+    final progressionSet = await getFirstOfLastSession(
+      exercise?.id ?? -1,
+    );
+    double? previousSessionTenRm;
+    if (progressionSet != null && !progressionSet.cardio) {
+      final loadKg = canonicalExerciseSetLoad(
+        progressionSet.unit,
+        progressionSet.weight,
+      );
+      if (loadKg != null) {
+        previousSessionTenRm = estimateTenRm([
+          TenRmSet(
+            weight: displayLoad(_unit, loadKg),
+            reps: progressionSet.reps,
+          ),
+        ]);
+      }
+    }
+
+    final step = weightStep(exerciseName, _unit);
+    final progressionBaseline = previousSessionTenRm ?? tenRm;
+    final recommendation = progressionBaseline == null
+        ? null
+        : recommendProgressiveFirstSetWeight(
+            previousTenRm: progressionBaseline,
+            step: step,
+            targetReps: targetReps,
+          );
+
+    setState(() {
+      _lastSetTenRm = recentSets.isEmpty
+          ? null
+          : estimateTenRm([recentSets.first]);
+      _recommendedNextWeight = recommendation;
+      _targetReps = targetReps;
+    });
   }
 
   /// Returns the first set from the most recent training session for [exercise].
@@ -661,8 +852,76 @@ class _StartPlanPageState extends State<StartPlanPage>
     return workout;
   }
 
+  String _formatElapsed(Duration duration) {
+    final hours = duration.inHours;
+    final minutes = duration.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = duration.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return hours > 0 ? '$hours:$minutes:$seconds' : '$minutes:$seconds';
+  }
+
+  void _startTicker() {
+    _elapsedTicker?.cancel();
+    _elapsedTicker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  Future<void> _startWorkout() async {
+    if (_startingWorkout || _workout != null) return;
+    setState(() => _startingWorkout = true);
+    try {
+      await _ensureWorkout();
+      if (mounted) _startTicker();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.workoutStartFailed)),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _startingWorkout = false);
+    }
+  }
+
+  Future<void> _confirmFinishWorkout() async {
+    final workout = _workout;
+    if (workout == null) return;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(context.l10n.workoutFinishConfirm),
+        content: Text(context.l10n.workoutFinishDescription),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(context.l10n.actionCancel)),
+          FilledButton(onPressed: () => Navigator.pop(context, true), child: Text(context.l10n.workoutFinish)),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+    try {
+      await finishWorkout(db, workout.id);
+      _elapsedTicker?.cancel();
+      if (mounted) Navigator.of(context).pop();
+    } catch (_) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.workoutFinishFailed)),
+        );
+      }
+    }
+  }
+
   Future<void> _initializeWorkout() async {
-    await _ensureWorkout();
+    final existing = await (db.workouts.select()
+          ..where((w) => w.planId.equals(widget.plan.id) & w.endedAt.isNull())
+          ..limit(1)).getSingleOrNull();
+    if (existing == null || !mounted || _workout != null) return;
+    setState(() {
+      _workout = existing;
+      _workoutFuture = Future.value(existing);
+      _gymCountsStream = watchGymCounts(widget.plan.id, existing.id);
+    });
+    _startTicker();
   }
 
   @override
@@ -771,6 +1030,12 @@ class _StartPlanPageState extends State<StartPlanPage>
     List<GymCount> counts,
   ) async {
     if (_saving) return;
+    if (_workout == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.workoutStartFirst)),
+      );
+      return;
+    }
     if (!_key.currentState!.validate()) return;
     if (snapshot.data == null || snapshot.data!.isEmpty) return;
     if (_selected >= snapshot.data!.length) return;
@@ -886,6 +1151,8 @@ class _StartPlanPageState extends State<StartPlanPage>
         _updateExerciseSetTextFields(exerciseSet);
         _lastSaved = DateTime.now();
       });
+      await _refreshTenRm(exercise);
+      if (!mounted) return;
       if (finishedExercise) await select(_selected + 1);
 
       if (!settings.notifications) return;
@@ -926,6 +1193,7 @@ class _StartPlanPageState extends State<StartPlanPage>
 
     setState(() {
       _selected = selected;
+      _selectedExerciseName = exercise.name;
       if (last != null) {
         _updateExerciseSetTextFields(last);
       } else if (template != null) {
@@ -937,7 +1205,9 @@ class _StartPlanPageState extends State<StartPlanPage>
       } else {
         _clearExerciseSetTextFields();
       }
+      _selectedExerciseName = exercise.name;
     });
+    await _refreshTenRm(exercise.name);
   }
 
   Future<void> select(int index) async {
@@ -960,6 +1230,10 @@ class _StartPlanPageState extends State<StartPlanPage>
     _category = null;
     _image = null;
     _notes.text = '';
+    _tenRmRequestId++;
+    _lastSetTenRm = null;
+    _recommendedNextWeight = null;
+    _targetReps = 15;
   }
 
   void useBodyWeight() async {

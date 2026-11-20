@@ -345,6 +345,7 @@ List<Widget> getWorkoutSettings(
           items: const [
             DropdownMenuItem(value: 10, child: Text("10")),
             DropdownMenuItem(value: 20, child: Text("20")),
+            DropdownMenuItem(value: 30, child: Text("30")),
             DropdownMenuItem(value: 50, child: Text("50")),
             DropdownMenuItem(value: 100, child: Text("100")),
             DropdownMenuItem(value: 200, child: Text("200")),
