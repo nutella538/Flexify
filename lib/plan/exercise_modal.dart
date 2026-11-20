@@ -83,8 +83,9 @@ class _ExerciseModalState extends State<ExerciseModal> {
             final warmupController = TextEditingController(text: _warmup.text);
             final targetRepsController = TextEditingController(text: _targetReps.text);
             var timers = _timers;
-            Navigator.pop(context);
-
+            // Keep the exercise sheet mounted while the settings dialog is open.
+            // Removing it during the same navigation transition can invalidate
+            // inherited-widget dependencies used by the dialog.
             await showDialog(
               context: rootContext,
               builder: (dialogContext) {
@@ -170,9 +171,13 @@ class _ExerciseModalState extends State<ExerciseModal> {
                 );
               },
             );
-            maxController.dispose();
-            warmupController.dispose();
-            targetRepsController.dispose();
+            if (context.mounted) Navigator.pop(context);
+            // Let the dialog finish its teardown before disposing controllers.
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              maxController.dispose();
+              warmupController.dispose();
+              targetRepsController.dispose();
+            });
           },
         ),
         if (widget.hasData)
